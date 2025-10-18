@@ -1,0 +1,35 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cómo Jugar</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <div class="overlay"></div>
+
+    <div class="content">
+        <h1>Cómo Jugar</h1>
+
+        <div class="instrucciones" style="max-width: 600px; text-align: center; margin: 30px auto; font-size: 1.2rem; line-height: 1.5;">
+            <p>El objetivo del juego es reciclar la mayor cantidad de basura haciendo click en el tarro.</p>
+            <p>Con las botellas que acumules podrás desbloquear partes de la ciudad como centros de reciclaje, paneles solares y energía eólica.</p>
+        </div>
+
+        <div class="volver" style="text-align: center; margin-top: 20px;">
+            <a href="/" style="
+                font-size: 2rem;
+                padding: 15px 40px;
+                background-color: rgba(0,0,255,0.4);
+                color: white;
+                text-decoration: none;
+                border-radius: 8px;
+                display: inline-block;
+                transition: all 0.2s ease;
+            ">Volver al Menú</a>
+        </div>
+    </div>
+</body>
+</html>

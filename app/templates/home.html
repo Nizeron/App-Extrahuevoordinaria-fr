@@ -1,0 +1,24 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <div class="overlay"></div>
+
+    <div class="content">
+        <h1>*Nombre del juego*</h1>
+
+        <div class="opciones">
+            <ul>
+                <li><a href="/sesion">Empezar</a></li>
+                <li><a href="/about">Cómo Jugar</a></li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

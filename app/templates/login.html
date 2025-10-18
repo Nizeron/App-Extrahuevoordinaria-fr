@@ -1,0 +1,28 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Iniciar Sesión</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <!-- Overlay oscuro sobre el fondo -->
+    <div class="overlay"></div>
+
+    <!-- Contenedor centrado -->
+    <div class="content">
+        <h2>Login</h2>
+
+        <!-- Formulario simple de Django -->
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }} 
+            <button type="submit">Entrar</button>
+        </form>
+
+        <!-- Botón volver simple -->
+        <p><a href="/sesion/">Volver</a></p>
+    </div>
+</body>
+</html>

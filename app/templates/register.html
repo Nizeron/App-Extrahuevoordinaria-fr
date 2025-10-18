@@ -1,0 +1,28 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Registrarse</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <!-- Overlay oscuro sobre el fondo -->
+    <div class="overlay"></div>
+
+    <!-- Contenedor centrado -->
+    <div class="content">
+        <h2>Crear cuenta</h2>
+
+        <!-- Formulario con validación Django -->
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }} <!-- username, password1, password2 con validación incluida -->
+            <button type="submit">Crear Cuenta</button>
+        </form>
+
+        <!-- Botón volver simple -->
+        <p><a href="/sesion/">Volver</a></p>
+    </div>
+</body>
+</html>

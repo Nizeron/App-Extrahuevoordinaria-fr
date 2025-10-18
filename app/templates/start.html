@@ -1,0 +1,28 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Empezar</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <!-- Overlay oscuro sobre el fondo -->
+    <div class="overlay"></div>
+
+    <!-- Contenedor principal centrado -->
+    <div class="content">
+        <h1>Empezar</h1>
+
+        <!-- Bloque de botones: Iniciar Sesión, Registrarse, Volver -->
+        <div class="opciones">
+            <ul>
+                <li><a href="{% url 'login' %}">Login</a></li>
+                <li><a href="{% url 'register' %}">Register</a></li>
+                <li><a href="/" style="background-color: rgba(255, 255, 255, 0.3); color:black;">Volver al Menú</a></li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

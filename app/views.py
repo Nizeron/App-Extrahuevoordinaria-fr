@@ -31,4 +31,4 @@ def obtener_progreso(request):
         'desbloqueables': progreso.desbloqueables
     })
 
-# Create your views here.
+# Comentario prueba

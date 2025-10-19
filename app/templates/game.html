@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Juego Incremental</title>
+    {% load static %}
+    <script src="{% static 'js/juego.js' %}" defer></script>
+</head>
+<body>
+    <h1> Prueba Juego Incremental</h1>
+
+    <p>Puntos: <span id="puntos">0</span></p>
+    <button id="clicker">Haz clic!</button>
+
+    <h2>Mejoras</h2>
+    <button id="upgrade" disabled>Clic +2 (Costo: 10)</button>
+</body>
+</html>

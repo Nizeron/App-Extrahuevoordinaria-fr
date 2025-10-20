@@ -1,18 +1,103 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <title>Juego Incremental</title>
-    {% load static %}
     <script src="{% static 'js/juego.js' %}" defer></script>
+
+    <style>
+        /* ======== FONDO ======== */
+        body {
+            background-image: url("{% static 'images/ciudad1.avif' %}");
+            background-size: cover;         /* hace que la imagen ocupe toda la pantalla */
+            background-position: center;    /* centra la imagen */
+            background-repeat: no-repeat;   /* evita que se repita */
+            background-attachment: fixed;   /* se mantiene fija al hacer scroll */
+            color: #fff;
+            font-family: "Press Start 2P", monospace;
+            text-align: center;
+            margin: 0;
+            height: 100vh;  /* altura completa de pantalla */
+        }
+
+        /* ======== CONTENEDOR DEL JUEGO ======== */
+        .game-container {
+            background-color: rgba(0, 0, 0, 0.6); /* leve oscurecimiento para leer texto */
+            padding: 40px;
+            border-radius: 12px;
+            margin: 80px auto;
+            width: 80%;
+            max-width: 500px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.6);
+        }
+
+        #puntos {
+            font-size: 24px;
+            color: #00ff66;
+        }
+
+        .pixel-button {
+            background-color: #00a86b;
+            color: white;
+            border: 4px solid #004d3a;
+            padding: 20px;
+            cursor: pointer;
+            box-shadow: 0 0 0 4px #00694d, 0 8px 0 4px #004d3a;
+            transition: all 0.1s ease;
+            display: inline-flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            image-rendering: pixelated;
+        }
+
+        .pixel-button:hover {
+            background-color: #00c97b;
+        }
+
+        .pixel-button:active {
+            transform: translateY(4px);
+            box-shadow: 0 0 0 4px #00694d, 0 4px 0 4px #004d3a;
+        }
+
+        .recycle-icon {
+            width: 48px;
+            height: 48px;
+            margin-bottom: 10px;
+            image-rendering: pixelated;
+        }
+
+        #upgrade {
+            margin-top: 20px;
+            background-color: #3b3b3b;
+            color: #fff;
+            border: 3px solid #666;
+            padding: 10px;
+            cursor: pointer;
+            font-family: "Press Start 2P", monospace;
+        }
+
+        #upgrade:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+    </style>
 </head>
+
 <body>
-    <h1> Prueba Juego Incremental</h1>
+    <div class="game-container">
+        <h1>♻️ Juego Incremental de Reciclaje</h1>
+        <p>Puntos: <span id="puntos">0</span></p>
 
-    <p>Puntos: <span id="puntos">0</span></p>
-    <button id="clicker">Haz clic!</button>
+        <button id="clicker" class="pixel-button">
+            <img class="recycle-icon" src="{% static 'images/Pixel-Art-Water-Bottle-6.webp' %}" alt="Botella reciclaje">
+            ¡Reciclar!
+        </button>
 
-    <h2>Mejoras</h2>
-    <button id="upgrade" disabled>Clic +2 (Costo: 10)</button>
+        <h2>Mejoras</h2>
+        <button id="upgrade" disabled>Clic +2 (Costo: 10)</button>
+    </div>
 </body>
 </html>
+

@@ -1,4 +1,4 @@
-let puntos = parseInt(document.getElementById('puntos').textContent);
+let puntos = 0;
 let puntosPorClick = 1;
 
 const puntosSpan = document.getElementById('puntos');
@@ -9,7 +9,7 @@ clickerBtn.addEventListener('click', () => {
     puntos += puntosPorClick;
     puntosSpan.textContent = puntos;
 
-    // Habilitar mejora si alcanza 10 puntos
+    // Habilitar la mejora si alcanza 10 puntos
     if (puntos >= 10) {
         upgradeBtn.disabled = false;
     }
@@ -21,6 +21,6 @@ upgradeBtn.addEventListener('click', () => {
         puntosPorClick += 1;
         puntosSpan.textContent = puntos;
         upgradeBtn.textContent = `Clic +${puntosPorClick} (Costo: 10)`;
-        upgradeBtn.disabled = true;
+        upgradeBtn.disabled = true; // se vuelve a deshabilitar hasta tener 10 puntos otra vez
     }
 });

@@ -7,36 +7,40 @@
     <script src="{% static 'js/juego.js' %}" defer></script>
 
     <style>
-        /* ======== FONDO ======== */
+        /* === FONDO === */
         body {
             background-image: url("{% static 'images/ciudad1.avif' %}");
-            background-size: cover;         /* hace que la imagen ocupe toda la pantalla */
-            background-position: center;    /* centra la imagen */
-            background-repeat: no-repeat;   /* evita que se repita */
-            background-attachment: fixed;   /* se mantiene fija al hacer scroll */
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
             color: #fff;
             font-family: "Press Start 2P", monospace;
-            text-align: center;
             margin: 0;
-            height: 100vh;  /* altura completa de pantalla */
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: start;
+            gap: 40px; /* separación entre el juego y la tienda */
+            padding-top: 60px;
         }
 
-        /* ======== CONTENEDOR DEL JUEGO ======== */
+        /* === PANEL PRINCIPAL === */
         .game-container {
-            background-color: rgba(0, 0, 0, 0.6); /* leve oscurecimiento para leer texto */
-            padding: 40px;
+            background-color: rgba(0, 0, 0, 0.6);
+            padding: 30px;
             border-radius: 12px;
-            margin: 80px auto;
-            width: 80%;
-            max-width: 500px;
+            width: 360px;
+            text-align: center;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.6);
         }
 
         #puntos {
-            font-size: 24px;
+            font-size: 20px;
             color: #00ff66;
         }
 
+        /* === BOTÓN DE RECICLAR === */
         .pixel-button {
             background-color: #00a86b;
             color: white;
@@ -68,36 +72,95 @@
             image-rendering: pixelated;
         }
 
-        #upgrade {
-            margin-top: 20px;
-            background-color: #3b3b3b;
-            color: #fff;
-            border: 3px solid #666;
-            padding: 10px;
-            cursor: pointer;
-            font-family: "Press Start 2P", monospace;
+        /* === TIENDA === */
+        .shop-container {
+            background-color: rgba(0, 0, 0, 0.6);
+            padding: 20px;
+            border-radius: 12px;
+            width: 280px;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.6);
         }
 
-        #upgrade:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
+        .shop-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border: 2px solid #444;
+            padding: 10px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            background-color: #222;
+            transition: background 0.2s;
+        }
+
+        .shop-item:hover {
+            background-color: #333;
+        }
+
+        .shop-item img {
+            width: 40px;
+            height: 40px;
+            image-rendering: pixelated;
+        }
+
+        .shop-item span {
+            font-size: 10px;
+        }
+
+        .cost {
+            color: #00ff66;
+            font-size: 8px;
         }
     </style>
 </head>
 
 <body>
+    <!-- PANEL PRINCIPAL -->
     <div class="game-container">
-        <h1>♻️ Juego Incremental de Reciclaje</h1>
+        <h1>♻️ Juego de Reciclaje</h1>
         <p>Puntos: <span id="puntos">0</span></p>
 
         <button id="clicker" class="pixel-button">
             <img class="recycle-icon" src="{% static 'images/Pixel-Art-Water-Bottle-6.webp' %}" alt="Botella reciclaje">
             ¡Reciclar!
         </button>
+    </div>
 
-        <h2>Mejoras</h2>
-        <button id="upgrade" disabled>Clic +2 (Costo: 10)</button>
+    <!-- TIENDA -->
+    <div class="shop-container">
+        <h2>Tienda</h2>
+
+        <div class="shop-item" data-cost="20" data-power="1" id="personal">
+            <img src="{% static 'images/personal.png' %}" alt="Personal">
+            <span>Personal<br><span class="cost">Costo: 20</span></span>
+        </div>
+
+        <div class="shop-item" data-cost="50" data-power="2" id="camiones">
+            <img src="{% static 'images/camion.png' %}" alt="Camión de basura">
+            <span>Camión de Basura<br><span class="cost">Costo: 50</span></span>
+        </div>
+
+        <div class="shop-item" data-cost="100" data-power="3" id="tuberias">
+            <img src="{% static 'images/tuberias.png' %}" alt="Tuberías">
+            <span>Mejora de Tuberías<br><span class="cost">Costo: 100</span></span>
+        </div>
+
+        <div class="shop-item" data-cost="200" data-power="4" id="paneles">
+            <img src="{% static 'images/panel.png' %}" alt="Panel solar">
+            <span>Paneles Solares<br><span class="cost">Costo: 200</span></span>
+        </div>
+
+        <div class="shop-item" data-cost="400" data-power="5" id="arboles">
+            <img src="{% static 'images/arbol.png' %}" alt="Árboles">
+            <span>Árboles<br><span class="cost">Costo: 400</span></span>
+        </div>
+
+        <div class="shop-item" data-cost="800" data-power="6" id="luces">
+            <img src="{% static 'images/luces.png' %}" alt="Luces LED">
+            <span>Luces LED<br><span class="cost">Costo: 800</span></span>
+        </div>
     </div>
 </body>
 </html>
-

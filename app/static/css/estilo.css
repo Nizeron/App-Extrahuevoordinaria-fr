@@ -1,0 +1,19 @@
+.shop-item {
+    cursor: pointer;
+    border: 2px solid #444;
+    border-radius: 8px;
+    margin: 8px;
+    padding: 8px;
+    text-align: center;
+    transition: transform 0.2s ease, background 0.3s ease;
+}
+
+.shop-item:hover {
+    background: #3e8e41;
+    transform: scale(1.05);
+}
+
+.shop-item.bought {
+    background: #6ac46a;
+    transform: scale(1.1);
+}

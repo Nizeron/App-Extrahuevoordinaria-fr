@@ -1,0 +1,122 @@
+/* city.css - fondo pixeleado estilo "Smashy Road" */
+
+/* usa la clase .pixel-city en el <body> para activar este fondo */
+body.pixel-city {
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+    font-family: 'Press Start 2P', monospace;
+    color: #fff;
+  /* color base por si algo falla */
+    background-color: #071428;
+    /* composicion por capas: (de arriba a abajo en orden) 
+    - capa de estrellas (patrón radial pequeño)
+    - cielo gradiente
+    - capa de nubes pixeladas tenue (repeating-linear-gradient)
+    - skyline lejano (bloques repetidos)
+    - skyline cercano (bloques más grandes)
+  */
+    background-image:
+    /* 1) Estrellas pixel pequeñas */
+        radial-gradient(circle, rgba(255,255,255,0.95) 0.6px, rgba(255,255,255,0.0) 0.6px),
+    /* 2) Cielo gradiente */
+        linear-gradient(180deg, #0b2740 0%, #072235 55%, #031722 100%),
+    /* 3) Nubes/pixels (suave) */
+        repeating-linear-gradient(180deg, rgba(255,255,255,0.02) 0 2px, rgba(0,0,0,0) 2px 6px),
+    /* 4) Skyline lejano — muchos edificios pequeños (usa tiras horizontales) */
+        repeating-linear-gradient(
+        90deg,
+        #0b2d3a 0 12px,
+        #08313a 12px 24px,
+        #0d2530 24px 36px
+    ),
+    /* 5) Skyline cercano — bloques mas grandes (silhouette) */
+        linear-gradient(180deg, transparent 0 60%, rgba(2,14,18,0.95) 60% 100%);
+  /* tamaños de fondo por capa (debe corresponder al número de capas) */
+    background-size:
+    /* 1) estrellas: patrón pequeño para repetir por toda la pantalla */
+        6px 6px,
+    /* 2) cielo: ocupa todo */
+        cover,
+    /* 3) nubes/pixels: 100% ancho, repetición vertical pequeña */
+        100% 30px,
+    /* 4) skyline lejano: barras horizontales repetidas (ancho repetición) */
+        100% 120px,
+    /* 5) skyline cercano: ocupa todo y se queda al fondo */
+        100% 100%;
+    background-position:
+        0 20px,    /* estrellas ligeramente hacia arriba */
+        center top,
+        center 30px,
+        0 70%,
+        center bottom;
+    background-repeat: repeat, no-repeat, repeat, repeat, no-repeat;
+
+  /* fuerza el efecto pixelado para capas que sean imágenes/tiles */
+    image-rendering: pixelated;
+    overflow-x: hidden;
+}
+
+/* Opcional: una capa 'suelo' abajo con cuadrados grandes para efecto pixel-road */
+body.pixel-city::after {
+    content: "";
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 120px;
+    background-image:
+        linear-gradient(90deg,
+        #0a1e26 0 40px,
+        #081a20 40px 80px);
+    background-size: 40px 40px;
+    z-index: 10;
+    opacity: 0.95;
+    pointer-events: none;
+    image-rendering: pixelated;
+}
+
+/* Elementos frontales (opcional): añade una silueta de edificios con más contraste */
+.city-foreground {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 220px;
+    z-index: 15;
+    pointer-events: none;
+    background-image:
+        linear-gradient(90deg,
+        rgba(0,0,0,0.85) 0 30%,
+        rgba(3,10,12,0.95) 30% 70%,
+        rgba(0,0,0,0.85) 70% 100%);
+    box-shadow: inset 0 40px 80px rgba(0,0,0,0.5);
+    mix-blend-mode: multiply;
+}
+
+/* pequeños ajustes de brillo nocturno (neón) para ventanas */
+.city-windows {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 70px;
+    height: 140px;
+    z-index: 12;
+    pointer-events: none;
+    background-image:
+        linear-gradient(90deg,
+        rgba(255,255,200,0.02) 0 2px,
+        rgba(0,0,0,0) 2px 6px);
+    background-size: 8px 8px;
+    mix-blend-mode: screen;
+    opacity: 0.35;
+}
+
+/* mejora responsiva: reduce detalle en pantallas pequeñas */
+@media (max-width: 900px) {
+    body.pixel-city {
+        background-size: 6px 6px, cover, 100% 20px, 100% 90px, 100% 100%;
+    }
+    body.pixel-city::after { height: 80px; }
+    .city-foreground { height: 120px; bottom: 0; }
+}

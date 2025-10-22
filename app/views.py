@@ -1,7 +1,6 @@
 
 from django.shortcuts import render
 from django.http import JsonResponse
-from .models import Progreso
 from django.contrib.auth.decorators import login_required
 
 def index(request):

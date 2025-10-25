@@ -7,3 +7,4 @@ urlpatterns = [
     #path('guardar-progreso/', views.guardar_progreso, name='guardar_progreso'),
     #path('obtener-progreso/', views.obtener_progreso, name='obtener_progreso'),
 ]
+#intento

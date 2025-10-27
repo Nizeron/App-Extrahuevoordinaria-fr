@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+    <title>
+        {% block nombre %}
+            Default
+        {% endblock %}
+    </title>
+    <link rel="stylesheet" href="{% static 'css/estilo.css' %}"> <!--estilo-->
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet"> <!--font-->
+</head>
+<body>
+    <main>
+        {% block costo %}
+            Costo
+        {% blockend %}
+        {% block about %}
+            Descripción
+        {% blockend %}
+        {% block incremento %}
+            Incremento default
+        {% blockend %}
+    </main>
+</body>
+</html>

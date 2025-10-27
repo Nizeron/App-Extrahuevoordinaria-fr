@@ -11,6 +11,8 @@ def about(request):
     return render(request, 'about.html')
 def game(request):
     return render(request, "juego.html")
+def item_test(request):
+    return render(request,"items_layout.html")
 
 
 #Inicio de sesion

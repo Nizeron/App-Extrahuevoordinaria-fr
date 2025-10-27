@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+    <title>
+    </title>
+    <link rel="stylesheet" href="{% static 'css/game.css' %}"> <!--estilo-->
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet"> <!--font-->
+</head>
+<body>
+    <main>
+        <section>
+            <h1>Modelos</h1>
+            {% block items%}
+                {% for item in items %}
+                    <article class="item">
+                        <h3>{{item.nombre}}</h3>
+                        <h3>{{item.costo}}</h3>
+                        <h3>{{item.about}}</h3>
+                        <h3>{{item.cantidad}}</h3>
+                        <h3>{{item.incremento}}</h3>
+                    </article>
+                {% endfor %}
+            {% endblock %}
+        </section>
+            
+    </main>
+</body>
+</html>

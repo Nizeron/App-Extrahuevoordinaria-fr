@@ -10,8 +10,10 @@ def index(request):
 @login_required
 def juego(request):
     return render(request, 'app/juego.html')
-def item_lsit(request):
-    items=Items.objects.all()
-    return render(request, 'app/item_layout.html')
 
+def items(request):
+    return render(request, 'app/items_layout.html')
+def item_list(request):
+    ites=Items.objects.all()
+    return render(request,'app/items_layout.html',{'items':items})
 # Comentario prueba

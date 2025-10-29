@@ -6,5 +6,6 @@ urlpatterns = [
     path('juego/', views.juego, name='juego'),
     #path('guardar-progreso/', views.guardar_progreso, name='guardar_progreso'),
     #path('obtener-progreso/', views.obtener_progreso, name='obtener_progreso'),
+    path('guardar_puntos/',views.guardar_puntos, name='guardar_puntos')
 ]
 #intento

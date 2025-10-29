@@ -1,101 +1,113 @@
-// juego.js — robusto: espera a DOMContentLoaded y añade listeners a .shop-item
+document.addEventListener("DOMContentLoaded", () => {
 
-document.addEventListener('DOMContentLoaded', () => {
-  // --- Estado ---
-    let puntos = 0;
-    let puntosPorClick = 1;
+  // --- VARIABLES DEL JUEGO ---
+  let puntos = 0;
+  let puntosPorClick = 1;
 
-  // --- Referencias DOM ---
-    const puntosSpan = document.getElementById('puntos');
-    const clickerBtn = document.getElementById('clicker');
-    const tiendaItems = document.querySelectorAll('.shop-item');
+  // --- ELEMENTOS DEL DOM ---
+  const puntosSpan = document.getElementById("puntos");
+  const botonClicker = document.getElementById("clicker");
+  const itemsTienda = document.querySelectorAll(".shop-item");
 
-  // --- Comprobaciones iniciales ---
-    if (!puntosSpan) console.error('No se encontró #puntos en el DOM.');
-    if (!clickerBtn) console.error('No se encontró #clicker en el DOM.');
-    if (tiendaItems.length === 0) console.warn('No se encontraron elementos .shop-item (length = 0).');
+  if (!botonClicker || !puntosSpan) return console.error("Elementos esenciales no encontrados");
 
-  // --- Helpers ---
-    function actualizarPuntos() {
-    if (puntosSpan) puntosSpan.textContent = puntos;
+  // --- ACTUALIZA EL CONTADOR ---
+  function actualizarPuntos() {
+    puntosSpan.textContent = puntos;
+  }
+
+  // --- MENSAJE TEMPORAL ---
+  function mostrarMensaje(texto) {
+    const mensaje = document.createElement("div");
+    mensaje.textContent = texto;
+    Object.assign(mensaje.style, {
+      position: "fixed",
+      bottom: "20px",
+      right: "20px",
+      background: "rgba(0,0,0,0.8)",
+      color: "white",
+      padding: "10px 15px",
+      borderRadius: "8px",
+      fontFamily: "monospace",
+      zIndex: 1000,
+      transition: "opacity 0.5s"
+    });
+    document.body.appendChild(mensaje);
+    setTimeout(() => mensaje.style.opacity = "0", 1500);
+    setTimeout(() => mensaje.remove(), 2000);
+  }
+
+  // --- FUNCION COMPRAR ITEM ---
+  function comprarItem(item) {
+    const costo = parseInt(item.dataset.cost);
+    const poder = parseInt(item.dataset.power);
+
+    if (puntos < costo) {
+      item.animate([{ transform: "translateX(-5px)" }, { transform: "translateX(5px)" }, { transform: "translateX(0)" }], { duration: 200 });
+      mostrarMensaje(`Necesitas ${costo} puntos`);
+      return;
     }
 
-    function showToast(text) {
-        const t = document.createElement('div');
-        t.textContent = text;
-        Object.assign(t.style, {
-            position: 'fixed', right: '20px', bottom: '20px',
-            background: 'rgba(0,0,0,0.85)', color: 'white', padding: '8px 12px',
-            borderRadius: '6px', fontFamily: 'monospace', zIndex: 9999
-        });
-        document.body.appendChild(t);
-        setTimeout(()=> t.style.opacity = '0', 1600);
-        setTimeout(()=> t.remove(), 2000);
-    }
-
-  // --- Click principal ---
-    if (clickerBtn) {
-        clickerBtn.addEventListener('click', () => {
-        puntos += puntosPorClick;
-        actualizarPuntos();
-        console.log('Click reciclaje → puntos:', puntos, 'ppc:', puntosPorClick);
-    });
-    }
-
-  // --- Tienda: listeners individuales ---
-    tiendaItems.forEach(item => {
-    // mejorar accesibilidad/semántica si no lo cambias en HTML
-        if (!item.hasAttribute('role')) item.setAttribute('role', 'button');
-        if (!item.hasAttribute('tabindex')) item.setAttribute('tabindex', '0');
-
-    // click handler
-        item.addEventListener('click', comprarItem);
-    // soporte teclado: Enter / Space
-        item.addEventListener('keydown', (ev) => {
-            if (ev.key === 'Enter' || ev.key === ' ') {
-                ev.preventDefault();
-                comprarItem.call(item, ev);
-        }
-    });
-
-    function comprarItem(ev) {
-        const costoAttr = this.getAttribute('data-cost');
-        const poderAttr = this.getAttribute('data-power');
-        const costo = costoAttr ? parseInt(costoAttr, 10) : NaN;
-        const poder = poderAttr ? parseInt(poderAttr, 10) : 0;
-
-        console.log('Intento comprar', this.id, 'costo=', costo, 'poder=', poder, 'tienes=', puntos);
-
-        if (isNaN(costo)) {
-            console.warn('Item sin data-cost válido:', this);
-            return;
-        }
-
-        if (puntos < costo) {
-        // feedback de error
-            this.animate([{ transform: 'translateX(-6px)'}, { transform: 'translateX(6px)'}, { transform: 'translateX(0)'}], { duration: 180 });
-            showToast(`Necesitas ${costo} puntos para comprar ${this.id}`);
-            return;
-        }
-
-      // aplicar compra: descontar y aumentar ppc
-        puntos -= costo;
-        puntosPorClick += poder;
-        actualizarPuntos();
-
-      // feedback visual
-        this.classList.add('bought');
-        setTimeout(()=> this.classList.remove('bought'), 400);
-
-        console.log(`Compra OK: ${this.id} — descontado ${costo} — nuevo ppc: ${puntosPorClick}`);
-        showToast(`Compraste ${this.querySelector('span')?.firstChild?.textContent?.trim() || this.id} +${poder}/click`);
-        }
-    });
-
-  // inicializa contador en pantalla
+    puntos -= costo;
+    puntosPorClick += poder;
     actualizarPuntos();
-    console.log('juego.js cargado. shop-items:', tiendaItems.length);
+    mostrarMensaje(`Compraste ${item.id} (+${poder}/click)`);
+
+    item.classList.add("comprado");
+    setTimeout(() => item.classList.remove("comprado"), 400);
+
+    guardarPuntosServidor(); // 👈 guardamos después de cada compra también
+  }
+
+  // --- EVENTO CLICK PRINCIPAL ---
+  botonClicker.addEventListener("click", () => {
+    puntos += puntosPorClick;
+    actualizarPuntos();
+    guardarPuntosServidor();
+  });
+
+  // --- EVENTOS ITEMS TIENDA ---
+  itemsTienda.forEach(item => {
+    item.addEventListener("click", () => comprarItem(item));
+  });
+
+  // --- FUNCION GUARDAR PUNTOS EN EL SERVIDOR ---
+  function guardarPuntosServidor() {
+    fetch("/app/guardar_puntos/", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+        "X-CSRFToken": getCookie("csrftoken")
+      },
+      body: new URLSearchParams({ puntos })
+    })
+    .then(res => res.json())
+    .then(data => {
+      if (!data.ok) console.error("Error guardando puntos:", data.error);
+    })
+    .catch(err => console.error("Error de red:", err));
+  }
+
+  // --- HELPER CSRF ---
+  function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== "") {
+      document.cookie.split(";").forEach(cookie => {
+        cookie = cookie.trim();
+        if (cookie.startsWith(name + "=")) {
+          cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+        }
+      });
+    }
+    return cookieValue;
+  }
+
+  // --- INICIALIZA ---
+  actualizarPuntos();
+  console.log("Juego cargado con", itemsTienda.length, "ítems en la tienda.");
 });
+
+
 
 /*
 const upgradeBtn = document.getElementById('upgrade');

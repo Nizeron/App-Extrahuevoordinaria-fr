@@ -4,11 +4,20 @@
 <head>
     <meta charset="UTF-8">
     <title>Juego Incremental</title>
+
+    <!-- ✅ PASAR VALORES DE DJANGO A JAVASCRIPT -->
+    <script>
+    window.__INIT__ = {
+        puntos: {{ puntos|default:"0"|safe }},
+        click_power: {{ click_power|default:"1"|safe }}
+    };
+    </script>
+
     <script src="{% static 'js/juego.js' %}" defer></script>
-    <link rel="stylesheet" href="{% static 'css/estilo.css' %}"> <!-- Llamo al estilo-->
-    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">  <!-- fonts, son links que ayudan al diseño de la página-->
+    <link rel="stylesheet" href="{% static 'css/estilo.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+
     <style>
-        /* === FONDO === */
         body {
             background-image: url("{% static 'images/ciudad1.avif' %}");
             background-size: cover;
@@ -21,12 +30,11 @@
             height: 100vh;
             display: flex;
             justify-content: center;
-            align-items: start;
-            gap: 40px; /* separación entre el juego y la tienda */
-            padding-top: 60px;
+            align-items: flex-start;
+            gap: 40px;
+            padding-top: 0px;
         }
 
-        /* === PANEL PRINCIPAL === */
         .game-container {
             background-color: rgba(0, 0, 0, 0.6);
             padding: 30px;
@@ -41,7 +49,6 @@
             color: #00ff66;
         }
 
-        /* === BOTÓN DE RECICLAR === */
         .pixel-button {
             background-color: #00a86b;
             color: white;
@@ -73,7 +80,6 @@
             image-rendering: pixelated;
         }
 
-        /* === TIENDA === */
         .shop-container {
             background-color: rgba(0, 0, 0, 0.6);
             padding: 20px;
@@ -118,50 +124,53 @@
 </head>
 
 <body>
-    <!-- PANEL PRINCIPAL -->
+
     <div class="game-container">
         <h1>♻️ Juego de Reciclaje</h1>
-        <p>Puntos: <span id="puntos">0</span></p>
+
+        <!-- ✅ Muestra puntos del backend correctamente -->
+        <p>Puntos: <span id="puntos">{{ puntos|default:"0" }}</span></p>
 
         <button id="clicker" class="pixel-button">
-            <img class="recycle-icon" src="{% static 'images/Pixel-Art-Water-Bottle-6.webp' %}" alt="Botella reciclaje">
+            <img class="recycle-icon" src="{% static 'images/Pixel-Art-Water-Bottle-6.webp' %}" alt="Botella">
             ¡Reciclar!
         </button>
     </div>
 
-    <!-- TIENDA -->
     <div class="shop-container">
         <h2>Tienda</h2>
 
         <div class="shop-item" data-cost="20" data-power="1" id="personal">
-            <img src="{% static 'images/personal.png' %}" alt="Personal">
+            <img src="{% static 'images/personal.png' %}">
             <span>Personal<br><span class="cost">Costo: 20</span></span>
         </div>
 
         <div class="shop-item" data-cost="50" data-power="2" id="camiones">
-            <img src="{% static 'images/camion.png' %}" alt="Camión de basura">
+            <img src="{% static 'images/camion.png' %}">
             <span>Camión de Basura<br><span class="cost">Costo: 50</span></span>
         </div>
 
         <div class="shop-item" data-cost="100" data-power="3" id="tuberias">
-            <img src="{% static 'images/tuberias.png' %}" alt="Tuberías">
+            <img src="{% static 'images/tuberias.png' %}">
             <span>Mejora de Tuberías<br><span class="cost">Costo: 100</span></span>
         </div>
 
         <div class="shop-item" data-cost="200" data-power="4" id="paneles">
-            <img src="{% static 'images/panel.png' %}" alt="Panel solar">
+            <img src="{% static 'images/panel.png' %}">
             <span>Paneles Solares<br><span class="cost">Costo: 200</span></span>
         </div>
 
         <div class="shop-item" data-cost="400" data-power="5" id="arboles">
-            <img src="{% static 'images/arbol.png' %}" alt="Árboles">
+            <img src="{% static 'images/arbol.png' %}">
             <span>Árboles<br><span class="cost">Costo: 400</span></span>
         </div>
 
         <div class="shop-item" data-cost="800" data-power="6" id="luces">
-            <img src="{% static 'images/luces.png' %}" alt="Luces LED">
+            <img src="{% static 'images/luces.png' %}">
             <span>Luces LED<br><span class="cost">Costo: 800</span></span>
         </div>
+
     </div>
+
 </body>
 </html>

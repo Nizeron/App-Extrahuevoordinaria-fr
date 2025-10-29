@@ -1,23 +1,18 @@
-// juego.js — robusto: espera a DOMContentLoaded y añade listeners a .shop-item
-
+// juego.js — versión limpia SIN mejorasObj
 document.addEventListener('DOMContentLoaded', () => {
-  // --- Estado ---
-    let puntos = 0;
-    let puntosPorClick = 1;
+    // --- Estado inicial recibido desde Django ---
+    const INIT = window.__INIT__ || {};
+    let puntos = (typeof INIT.puntos === "number") ? INIT.puntos : 0;
+    let puntosPorClick = (typeof INIT.click_power === "number") ? INIT.click_power : 1;
 
-  // --- Referencias DOM ---
+    // --- Referencias DOM ---
     const puntosSpan = document.getElementById('puntos');
     const clickerBtn = document.getElementById('clicker');
     const tiendaItems = document.querySelectorAll('.shop-item');
 
-  // --- Comprobaciones iniciales ---
-    if (!puntosSpan) console.error('No se encontró #puntos en el DOM.');
-    if (!clickerBtn) console.error('No se encontró #clicker en el DOM.');
-    if (tiendaItems.length === 0) console.warn('No se encontraron elementos .shop-item (length = 0).');
-
-  // --- Helpers ---
+    // --- Helpers ---
     function actualizarPuntos() {
-    if (puntosSpan) puntosSpan.textContent = puntos;
+        if (puntosSpan) puntosSpan.textContent = puntos;
     }
 
     function showToast(text) {
@@ -29,94 +24,92 @@ document.addEventListener('DOMContentLoaded', () => {
             borderRadius: '6px', fontFamily: 'monospace', zIndex: 9999
         });
         document.body.appendChild(t);
-        setTimeout(()=> t.style.opacity = '0', 1600);
-        setTimeout(()=> t.remove(), 2000);
+        setTimeout(() => t.style.opacity = '0', 1600);
+        setTimeout(() => t.remove(), 2000);
     }
 
-  // --- Click principal ---
+    function getCookie(name) {
+        const value = `; ${document.cookie}`;
+        const parts = value.split(`; ${name}=`);
+        if (parts.length === 2) return parts.pop().split(';').shift();
+        return null;
+    }
+
+    // ✅ Guardar solo puntos, click_power y template
+    function guardarProgreso() {
+        fetch("/guardar/", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "X-CSRFToken": getCookie("csrftoken")
+            },
+            body: JSON.stringify({
+                puntos: puntos,
+                click_power: puntosPorClick,
+                template_actual: "game.html"
+            })
+        })
+        .then(res => res.json())
+        .then(data => console.log("✅ Progreso guardado:", data))
+        .catch(err => console.error("❌ Error guardando progreso:", err));
+    }
+
+    // --- Click principal ---
     if (clickerBtn) {
         clickerBtn.addEventListener('click', () => {
-        puntos += puntosPorClick;
-        actualizarPuntos();
-        console.log('Click reciclaje → puntos:', puntos, 'ppc:', puntosPorClick);
-    });
+            puntos += puntosPorClick;
+            actualizarPuntos();
+            guardarProgreso();
+            console.log('Click → puntos:', puntos, ' | ppc:', puntosPorClick);
+        });
     }
 
-  // --- Tienda: listeners individuales ---
+    // --- Tienda: compra de upgrades que aumentan el click_power ---
     tiendaItems.forEach(item => {
-    // mejorar accesibilidad/semántica si no lo cambias en HTML
+        // accesibilidad
         if (!item.hasAttribute('role')) item.setAttribute('role', 'button');
         if (!item.hasAttribute('tabindex')) item.setAttribute('tabindex', '0');
 
-    // click handler
         item.addEventListener('click', comprarItem);
-    // soporte teclado: Enter / Space
-        item.addEventListener('keydown', (ev) => {
+        item.addEventListener('keydown', ev => {
             if (ev.key === 'Enter' || ev.key === ' ') {
                 ev.preventDefault();
                 comprarItem.call(item, ev);
+            }
+        });
+
+        function comprarItem() {
+            const costo = parseInt(this.getAttribute('data-cost'), 10);
+            const poder = parseInt(this.getAttribute('data-power'), 10);
+
+            if (isNaN(costo)) return;
+
+            if (puntos < costo) {
+                this.animate(
+                    [{ transform: 'translateX(-6px)' }, { transform: 'translateX(6px)' }, { transform: 'translateX(0)' }],
+                    { duration: 180 }
+                );
+                showToast(`Necesitas ${costo} puntos`);
+                return;
+            }
+
+            // aplica compra
+            puntos -= costo;
+            puntosPorClick += (isNaN(poder) ? 0 : poder);
+
+            actualizarPuntos();
+            guardarProgreso();
+
+            // feedback visual
+            this.classList.add('bought');
+            setTimeout(() => this.classList.remove('bought'), 400);
+
+            console.log(`✅ Compraste ${this.id} → nuevo PPC: ${puntosPorClick}`);
+            showToast(`Mejora aplicada! +${poder}/click`);
         }
     });
 
-    function comprarItem(ev) {
-        const costoAttr = this.getAttribute('data-cost');
-        const poderAttr = this.getAttribute('data-power');
-        const costo = costoAttr ? parseInt(costoAttr, 10) : NaN;
-        const poder = poderAttr ? parseInt(poderAttr, 10) : 0;
-
-        console.log('Intento comprar', this.id, 'costo=', costo, 'poder=', poder, 'tienes=', puntos);
-
-        if (isNaN(costo)) {
-            console.warn('Item sin data-cost válido:', this);
-            return;
-        }
-
-        if (puntos < costo) {
-        // feedback de error
-            this.animate([{ transform: 'translateX(-6px)'}, { transform: 'translateX(6px)'}, { transform: 'translateX(0)'}], { duration: 180 });
-            showToast(`Necesitas ${costo} puntos para comprar ${this.id}`);
-            return;
-        }
-
-      // aplicar compra: descontar y aumentar ppc
-        puntos -= costo;
-        puntosPorClick += poder;
-        actualizarPuntos();
-
-      // feedback visual
-        this.classList.add('bought');
-        setTimeout(()=> this.classList.remove('bought'), 400);
-
-        console.log(`Compra OK: ${this.id} — descontado ${costo} — nuevo ppc: ${puntosPorClick}`);
-        showToast(`Compraste ${this.querySelector('span')?.firstChild?.textContent?.trim() || this.id} +${poder}/click`);
-        }
-    });
-
-  // inicializa contador en pantalla
+    // inicializar UI
     actualizarPuntos();
-    console.log('juego.js cargado. shop-items:', tiendaItems.length);
+    console.log("✅ juego.js cargado");
 });
-
-/*
-const upgradeBtn = document.getElementById('upgrade');
-
-clickerBtn.addEventListener('click', () => {
-    puntos += puntosPorClick;
-    puntosSpan.textContent = puntos;
-
-    // Habilitar la mejora si alcanza 10 puntos
-    if (puntos >= 10) {
-        upgradeBtn.disabled = false;
-    }
-});
-
-upgradeBtn.addEventListener('click', () => {
-    if (puntos >= 10) {
-        puntos -= 10;
-        puntosPorClick += 1;
-        puntosSpan.textContent = puntos;
-        upgradeBtn.textContent = `Clic +${puntosPorClick} (Costo: 10)`;
-        upgradeBtn.disabled = true; // se vuelve a deshabilitar hasta tener 10 puntos otra vez
-    }
-});
-*/

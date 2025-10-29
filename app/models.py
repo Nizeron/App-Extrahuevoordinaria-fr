@@ -1,12 +1,11 @@
 from django.db import models
-
 from django.contrib.auth.models import User
 
-class Progreso(models.Model):
+class ProgresoJugador(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    botellas = models.IntegerField(default=0)
-    desbloqueables = models.JSONField(default=list)
-
+    puntos = models.IntegerField(default=0)
+    click_power = models.IntegerField(default=1)
+    template_actual = models.CharField(max_length=100, default='game.html')
+    
     def __str__(self):
-        return f"{self.user.username} - {self.botellas} botellas"
-# Create your models here.
+        return f"{self.user.username} - {self.puntos} pts - {self.click_power}/click"

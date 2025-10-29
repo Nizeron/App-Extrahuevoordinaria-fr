@@ -2,7 +2,7 @@ from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import ensure_csrf_cookie
 from django.shortcuts import render
 from django.http import JsonResponse
-from .models import ProgresoJugador
+from .models import ProgresoJugador, Items
 import json
 
 @login_required
@@ -18,6 +18,7 @@ def juego_view(request):
 
 @login_required
 def guardar_progreso(request):
+
     if request.method != "POST":
         return JsonResponse({"error": "Método no permitido"}, status=405)
 
@@ -53,3 +54,7 @@ def guardar_progreso(request):
         "puntos": progreso.puntos,
         "click_power": progreso.click_power,
     })
+
+def lista_items(request):
+    items=Items.objects.all()
+    return render(request,'testing.html',{'items':items})

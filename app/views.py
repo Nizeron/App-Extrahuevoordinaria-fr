@@ -55,6 +55,9 @@ def guardar_progreso(request):
         "click_power": progreso.click_power,
     })
 
-def lista_items(request):
+def testing(request):
     items=Items.objects.all()
     return render(request,'testing.html',{'items':items})
+def items_juego(request):
+    items=Items.objects.all()
+    return render(request, 'testing.html',{'items':items})

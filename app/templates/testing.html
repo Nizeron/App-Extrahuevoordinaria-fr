@@ -3,18 +3,17 @@
 {% block titulo %}
     <title>TESTING</title>
 {% endblock titulo %}
-<article>
+
     {% block items %}
-            <div>
+
             <h1>Items</h1>
-            <div class="shop-container">
-                <h2>Tienda</h2>
-                {% for item in items %}
-                    <div class="shop-item" data-cost={{item.costo}} data-power={{item.incremento}}> <!--agregar variable de cantidad y resolver id-->
-                        <img src="{% static 'images/personal.png' %}">
-                        <span>{{item.nombre}}<br><span class="cost">Costo: {{item.costo}}</span></span>
-                    </div>
+                <div class="shop-container">
+                    <h2>Tienda</h2>
+                    {% for item in items %}
+                        <div class="shop-item" data-cost={{item.costo}} data-power={{item.incremento}}> <!--agregar variable de cantidad y resolver id-->
+                            <img src="{% static 'images/personal.png' %}">
+                            <span>{{item.nombre}}<br><span class="cost">Costo: {{item.costo}}</span></span>
+                </div>
                 {% endfor %}
-            </div>
+
     {% endblock %}
-</article>

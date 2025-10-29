@@ -58,6 +58,7 @@ def guardar_progreso(request):
 def testing(request):
     items=Items.objects.all()
     return render(request,'testing.html',{'items':items})
+
 def items_juego(request):
     items=Items.objects.all()
-    return render(request, 'testing.html',{'items':items})
+    return render(request, 'game.html',{'items':items})

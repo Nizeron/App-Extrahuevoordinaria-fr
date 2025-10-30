@@ -6,7 +6,7 @@ from .models import ProgresoJugador, Items
 import json
 
 @login_required
-@ensure_csrf_cookie        # asegura el CSRF para la primera carga
+@ensure_csrf_cookie        # asegura el CSRF para la primera carga 
 def juego_view(request):
     progreso, _ = ProgresoJugador.objects.get_or_create(user=request.user)
     items=Items.objects.all()

@@ -26,7 +26,7 @@ def register(request):
         form = UserCreationForm(request.POST)
         if form.is_valid():  # Valida username y contraseña
             form.save()      # Crea el usuario en auth_user
-            return redirect('/game/')  # Redirige a la página de inicio del juego
+            return redirect('/login/')  # Redirige a la página de inicio del juego
     else:
         form = UserCreationForm()  # Muestra formulario vacío
 

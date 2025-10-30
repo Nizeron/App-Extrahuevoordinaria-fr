@@ -1,0 +1,91 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Ciudad Limpia - Nivel 5</title>
+
+    <!-- ✅ Datos desde Django hacia JS -->
+    <script>
+    window.__INIT__ = {
+        puntos: {{ puntos|default:"0"|safe }},
+        click_power: {{ click_power|default:"1"|safe }}
+    };
+    </script>
+
+    <script src="{% static 'js/juego.js' %}" defer></script>
+    <link rel="stylesheet" href="{% static 'css/estilo.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+
+
+</head>
+
+<body>
+    <img class="bg-fullscreen"
+         src="{% static 'images/ciudad agua.png' %}"
+         alt="" aria-hidden="true">
+
+    <div class="game-container">
+        <h1>♻️ Ciudad Limpia - Nivel 5</h1>
+        <p>Puntos: <span id="puntos">{{ puntos|default:"0" }}</span></p>
+
+        <button id="clicker" class="pixel-button">
+            <img class="recycle-icon" src="{% static 'images/Pixel-Art-Water-Bottle-6.webp' %}" alt="Botella">
+            ¡Reciclar!
+        </button>
+    </div>
+
+    <div class="shop-container">
+        <h2>Tienda</h2>
+
+        <div class="shop-item" data-cost="20" data-power="1" id="carbono">
+            <img src="{% static 'images/ciudad agua.png' %}">
+            <span>Captura de Carbono<br><span class="cost">Costo: 20</span></span>
+        </div>
+
+        <div class="shop-item" data-cost="50" data-power="2" id="solar">
+            <img src="{% static 'images/camion.png' %}">
+            <span>Energía Solar<br><span class="cost">Costo: 50</span></span>
+        </div>
+
+        <div class="shop-item" data-cost="100" data-power="3" id="buses">
+            <img src="{% static 'images/tuberias.png' %}">
+            <span>Transporte Eléctrico<br><span class="cost">Costo: 100</span></span>
+        </div>
+
+        <div class="shop-item" data-cost="200" data-power="4" id="techos">
+            <img src="{% static 'images/panel.png' %}">
+            <span>Techos Verdes<br><span class="cost">Costo: 200</span></span>
+        </div>
+
+        <div class="shop-item" data-cost="400" data-power="5" id="agua">
+            <img src="{% static 'images/arbol.png' %}">
+            <span>Ahorro de Agua<br><span class="cost">Costo: 400</span></span>
+        </div>
+
+        <div class="shop-item" data-cost="800" data-power="6" id="luces">
+            <img src="{% static 'images/luces.png' %}">
+            <span>Luces LED Inteligentes<br><span class="cost">Costo: 800</span></span>
+        </div>
+    </div>
+
+    <!-- ✅ Información acumulada hasta nivel 5 -->
+    <div class="info-box">
+        <h3>Captura de Carbono</h3>
+        <p>Los filtros atrapan CO₂ de la atmósfera y ayudan a limpiar el aire.</p>
+
+        <h3>Energía Solar</h3>
+        <p>Genera electricidad sin contaminar y reduce el uso de combustibles fósiles.</p>
+
+        <h3>Transporte Eléctrico</h3>
+        <p>Vehículos eléctricos reducen la contaminación del aire y el ruido.</p>
+
+        <h3>Techos Verdes</h3>
+        <p>Plantas en los techos absorben CO₂, mejoran el aire y bajan la temperatura urbana.</p>
+
+        <h3>Ahorro de Agua</h3>
+        <p>Sistemas eficientes evitan desperdicio de agua y reducen el consumo energético.</p>
+    </div>
+
+</body>
+</html>

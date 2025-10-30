@@ -1,0 +1,141 @@
+/* ✅ Fondo a pantalla completa, estirado sin recorte */
+body {
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-attachment: fixed;
+    margin: 0;
+
+    /* Layout del juego */
+    display: flex !important;
+    flex-direction: row !important;
+    justify-content: flex-start !important;
+    align-items: flex-start !important;
+    gap: 20px;
+    padding: 20px;
+    color: #fff;
+    font-family: "Press Start 2P", monospace;
+}
+
+/* ✅ Estilo de paneles */
+.game-container, .shop-container, .info-box {
+    background: rgba(0,0,0,0.6);
+    padding: 18px;
+    border-radius: 12px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.6);
+}
+
+/* Panel izquierdo (juego) */
+.game-container {
+    width: 280px;
+    background: rgba(0,0,0,0.6);
+    padding: 18px;
+    border-radius: 12px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.6);
+
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;    /* ✅ centra el botón */
+}
+
+
+/* Panel central (tienda) */
+.shop-container {
+    width: 260px;
+    max-height: 80vh;
+    overflow-y: hidden;
+}
+
+/* Panel derecho (información) */
+/* Columna derecha (info) */
+.info-box {
+    width: 220px;
+    padding: 14px;
+    color: white;
+    font-size: 10px;
+    background: rgba(0,0,0,0.6);
+    border-radius: 12px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.6);
+
+    /* ✅ Esto evita que se estire hasta abajo */
+    height: auto;        
+    max-height: 100vh;     /* por si el texto es largo */
+    overflow-y: auto;     /* solo si se pasa del límite */
+}
+
+.info-box.hidden { display: none; }
+
+/* ✅ Botón corregido (ya no gigante) */
+.pixel-button {
+    background-color: #00a86b;
+    color: white;
+    border: 3px solid #004d3a;
+    cursor: pointer;
+
+    width: 130px;
+    height: 130px;
+    border-radius: 6px;
+
+    box-shadow: 0 0 0 3px #00694d, 0 5px 0 3px #004d3a;
+    transition: all 0.1s ease;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.pixel-button:hover { background-color: #00c97b; }
+.pixel-button:active {
+    transform: translateY(3px);
+    box-shadow: 0 0 0 3px #00694d, 0 2px 0 3px #004d3a;
+}
+
+/* Botella más pequeña */
+.recycle-icon {
+    width: 45px;
+    height: 45px;
+    margin-bottom: 8px;
+    image-rendering: pixelated;
+}
+
+/* ✅ Tienda */
+.shop-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border: 2px solid #444;
+    padding: 10px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    background-color: #222;
+    transition: background 0.2s;
+}
+.shop-item:hover { background-color: #333; }
+.shop-item img { width: 40px; height: 40px; }
+.shop-item span { font-size: 10px; }
+.cost { color: #00ff66; font-size: 8px; }
+
+/* Puntos */
+#puntos { font-size: 18px; color: #00ff66; }
+
+/* Quita cualquier fondo previo del body para no pelear estilos */
+body { background: none !important; }
+
+/* Imagen de fondo fija detrás de todo */
+.bg-fullscreen {
+  position: fixed;
+  inset: 0;              /* top:0; right:0; bottom:0; left:0 */
+  width: 100vw;
+  height: 100vh;
+  object-fit: fill;      /* ✅ se estira sin dejar bordes (sin recorte) */
+  z-index: -1;           /* detrás del juego */
+  pointer-events: none;  /* no bloquea clics */
+}
+
+/* Oculta scroll global de la página */
+html, body {
+    height: 100%;
+    overflow-y: hidden;  /* ✅ evita barra fea a la derecha */
+}

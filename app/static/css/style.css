@@ -72,3 +72,8 @@ body {
 h1 {
     margin-bottom: 30px;
 }
+/* Oculta scroll global de la página */
+html, body {
+    height: 100%;
+    overflow-y: hidden;  /* ✅ evita barra fea a la derecha */
+}

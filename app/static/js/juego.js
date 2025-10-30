@@ -1,31 +1,25 @@
-// juego.js — versión limpia SIN mejorasObj
+// juego.js — control de tienda + avance de niveles
 document.addEventListener('DOMContentLoaded', () => {
-    // --- Estado inicial recibido desde Django ---
     const INIT = window.__INIT__ || {};
-    let puntos = (typeof INIT.puntos === "number") ? INIT.puntos : 0;
-    let puntosPorClick = (typeof INIT.click_power === "number") ? INIT.click_power : 1;
+    let puntos = Number(INIT.puntos) || 0;
+    let puntosPorClick = Number(INIT.click_power) || 1;
 
-    // --- Referencias DOM ---
     const puntosSpan = document.getElementById('puntos');
     const clickerBtn = document.getElementById('clicker');
     const tiendaItems = document.querySelectorAll('.shop-item');
 
-    // --- Helpers ---
+    // Mensajes (IDs deben coincidir con el HTML)
+    const mensajes = {
+        carbono: { titulo: "Captura de Carbono", texto: "Atrapa CO₂ y reduce el calentamiento global." },
+        solar:   { titulo: "Energía Solar",       texto: "Produce energía limpia y disminuye el uso de combustibles fósiles." },
+        buses:   { titulo: "Transporte Eléctrico",texto: "Reduce smog y ruido, mejora la calidad del aire." },
+        techos:  { titulo: "Techos Verdes",       texto: "Absorben CO₂ y enfrían la ciudad." },
+        agua:    { titulo: "Ahorro de Agua",      texto: "Menor consumo y menor gasto energético de tratamiento." },
+        luces:   { titulo: "Luces LED",           texto: "Ahorran energía y duran mucho más." }
+    };
+
     function actualizarPuntos() {
         if (puntosSpan) puntosSpan.textContent = puntos;
-    }
-
-    function showToast(text) {
-        const t = document.createElement('div');
-        t.textContent = text;
-        Object.assign(t.style, {
-            position: 'fixed', right: '20px', bottom: '20px',
-            background: 'rgba(0,0,0,0.85)', color: 'white', padding: '8px 12px',
-            borderRadius: '6px', fontFamily: 'monospace', zIndex: 9999
-        });
-        document.body.appendChild(t);
-        setTimeout(() => t.style.opacity = '0', 1600);
-        setTimeout(() => t.remove(), 2000);
     }
 
     function getCookie(name) {
@@ -35,9 +29,8 @@ document.addEventListener('DOMContentLoaded', () => {
         return null;
     }
 
-    // ✅ Guardar solo puntos, click_power y template
-    function guardarProgreso() {
-        fetch("/guardar/", {
+    function guardarProgreso(mejora = null) {
+        fetch("/game/guardar/", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -46,30 +39,36 @@ document.addEventListener('DOMContentLoaded', () => {
             body: JSON.stringify({
                 puntos: puntos,
                 click_power: puntosPorClick,
-                template_actual: "game.html"
+                mejora: mejora
             })
         })
         .then(res => res.json())
-        .then(data => console.log("✅ Progreso guardado:", data))
-        .catch(err => console.error("❌ Error guardando progreso:", err));
+        .then(data => {
+            console.log("Guardado:", data);
+            // Si el backend cambió el template, redirige
+            if (data.template_actual) {
+                const destino = `/${data.template_actual}`;
+                // Evita recargar si ya estás en ese template
+                const current = window.location.pathname.replace(/^\//, '');
+                if (current !== data.template_actual) {
+                    window.location.href = destino;
+                }
+            }
+        })
+        .catch(err => console.error("Error guardando:", err));
     }
 
-    // --- Click principal ---
+    // Click principal
     if (clickerBtn) {
         clickerBtn.addEventListener('click', () => {
             puntos += puntosPorClick;
             actualizarPuntos();
-            guardarProgreso();
-            console.log('Click → puntos:', puntos, ' | ppc:', puntosPorClick);
+            guardarProgreso(); // sin mejora
         });
     }
 
-    // --- Tienda: compra de upgrades que aumentan el click_power ---
+    // Tienda
     tiendaItems.forEach(item => {
-        // accesibilidad
-        if (!item.hasAttribute('role')) item.setAttribute('role', 'button');
-        if (!item.hasAttribute('tabindex')) item.setAttribute('tabindex', '0');
-
         item.addEventListener('click', comprarItem);
         item.addEventListener('keydown', ev => {
             if (ev.key === 'Enter' || ev.key === ' ') {
@@ -81,35 +80,27 @@ document.addEventListener('DOMContentLoaded', () => {
         function comprarItem() {
             const costo = parseInt(this.getAttribute('data-cost'), 10);
             const poder = parseInt(this.getAttribute('data-power'), 10);
+            if (isNaN(costo) || puntos < costo) return;
 
-            if (isNaN(costo)) return;
-
-            if (puntos < costo) {
-                this.animate(
-                    [{ transform: 'translateX(-6px)' }, { transform: 'translateX(6px)' }, { transform: 'translateX(0)' }],
-                    { duration: 180 }
-                );
-                showToast(`Necesitas ${costo} puntos`);
-                return;
-            }
-
-            // aplica compra
             puntos -= costo;
             puntosPorClick += (isNaN(poder) ? 0 : poder);
-
             actualizarPuntos();
-            guardarProgreso();
 
-            // feedback visual
-            this.classList.add('bought');
-            setTimeout(() => this.classList.remove('bought'), 400);
+            // Muestra el mensaje en el panel lateral (info-box)
+            const infoBox = document.getElementById('info-box');
+            const infoTitle = document.getElementById('info-title');
+            const infoText = document.getElementById('info-text');
+            const msg = mensajes[this.id];
+            if (infoBox && infoTitle && infoText && msg) {
+                infoTitle.textContent = msg.titulo;
+                infoText.textContent  = msg.texto;
+                infoBox.classList.remove('hidden');
+            }
 
-            console.log(`✅ Compraste ${this.id} → nuevo PPC: ${puntosPorClick}`);
-            showToast(`Mejora aplicada! +${poder}/click`);
+            // Envía la mejora al backend (para cambio de template si corresponde)
+            guardarProgreso(this.id);
         }
     });
 
-    // inicializar UI
     actualizarPuntos();
-    console.log("✅ juego.js cargado");
 });

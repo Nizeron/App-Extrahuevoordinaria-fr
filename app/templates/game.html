@@ -6,7 +6,7 @@
     <meta charset="UTF-8">
     <title>Juego Incremental</title>
 
-    <!-- ✅ PASAR VALORES DE DJANGO A JAVASCRIPT -->
+    <!-- Pasar datos a JS -->
     <script>
     window.__INIT__ = {
         puntos: {{ puntos|default:"0"|safe }},
@@ -14,21 +14,30 @@
     };
     </script>
 
+    <!-- Archivos externos -->
     <script src="{% static 'js/juego.js' %}" defer></script>
     <link rel="stylesheet" href="{% static 'css/estilo.css' %}">
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+<<<<<<< HEAD
     <link rel="stylesheet static" href="{% static 'css/gamestatic.css'%}">
     <style>
 
     </style>
+=======
+
+    
+
+>>>>>>> branch-para-merge-con-test-ale
 </head>
 
 <body>
 
+    <img class="bg-fullscreen"
+         src="{% static 'images/ciudad basura.png' %}"
+         alt="" aria-hidden="true">
+    <!-- IZQUIERDA: CLICKER -->
     <div class="game-container">
-        <h1>♻️ Juego de Reciclaje</h1>
-
-        <!-- ✅ Muestra puntos del backend correctamente -->
+        <h1>♻️ Reciclaje</h1>
         <p>Puntos: <span id="puntos">{{ puntos|default:"0" }}</span></p>
 
         <button id="clicker" class="pixel-button">
@@ -37,13 +46,14 @@
         </button>
     </div>
 
+    <!-- CENTRO: TIENDA -->
     <div class="shop-container">
         <h2>Tienda</h2>
         
         {% for item in items %}
-                    <div class="shop-item" data-cost={{item.costo}} data-power={{item.incremento}} id='personal'> <!--agregar variable de cantidad y resolver id-->
+                    <div class="shop-item" data-cost={{item.costo}} data-power={{item.incremento}}> <!--agregar variable de cantidad y resolver id-->
                         <img src="{% static 'images/personal.png' %}">
-                        <span>{{item.nombre}}<br><span class="cost">Costo: {{item.costo}}</span></span>
+                        <span>{{item.nombre}}<br><span class="cost">Costo: {{item.costo}}</span></span> <!--idear forma de modulizar imagenes-->
                     </div>
         {% endfor %}
     </div>

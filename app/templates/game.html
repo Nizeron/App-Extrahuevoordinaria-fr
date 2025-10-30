@@ -1,31 +1,14 @@
-
+{% extends "items_layout.html" %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="es">
+{% block titulo %} 
 <head>
-    <meta charset="UTF-8">
-    <title>Juego Incremental</title>
-
-    <!-- ✅ PASAR VALORES DE DJANGO A JAVASCRIPT -->
-    <script>
-    window.__INIT__ = {
-        puntos: {{ puntos|default:"0"|safe }},
-        click_power: {{ click_power|default:"1"|safe }}
-    };
-    </script>
-
-    <script src="{% static 'js/juego.js' %}" defer></script>
-    <link rel="stylesheet" href="{% static 'css/estilo.css' %}">
-    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
-    <link rel="stylesheet static" href="{% static 'css/gamestatic.css'%}">
-    <style>
-
-    </style>
-</head>
+    <title>juego</title>
+</head> 
+{% endblock titulo %}
 
 <body>
-
-    <div class="game-container">
+    {% block boton %}
+        <div class="game-container">
         <h1>♻️ Juego de Reciclaje</h1>
 
         <!-- ✅ Muestra puntos del backend correctamente -->
@@ -36,17 +19,26 @@
             ¡Reciclar!
         </button>
     </div>
+    {% endblock boton %}
 
-    <div class="shop-container">
+    {% block items %}
+        <div class="shop-container">
         <h2>Tienda</h2>
         
         {% for item in items %}
                     <div class="shop-item" data-cost={{item.costo}} data-power={{item.incremento}} id='personal'> <!--agregar variable de cantidad y resolver id-->
                         <img src="{% static 'images/personal.png' %}">
                         <span>{{item.nombre}}<br><span class="cost">Costo: {{item.costo}}</span></span>
+                        <div class='cantidad'>
+                            0 <!--hacer cantidad modular-->
+                        </div>
+                        <div class='descripcion' align>
+                           <br><h6>{{item.descripcion}}</h6>
+                        </div>
                     </div>
         {% endfor %}
     </div>
+    {% endblock items %}
 
 </body>
 </html>

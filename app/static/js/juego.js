@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const puntosSpan = document.getElementById('puntos');
     const clickerBtn = document.getElementById('clicker');
     const tiendaItems = document.querySelectorAll('.shop-item');
-
+    //const contadorItems = hacer elemento para contar la cantidad de elementos con clase 'contador'
     // --- Helpers ---
     function actualizarPuntos() {
         if (puntosSpan) puntosSpan.textContent = puntos;

@@ -12,8 +12,9 @@
             window.__INIT__ = {
             puntos: {{ puntos|default:"0"|safe }},
             click_power: {{ click_power|default:"1"|safe }}
-        };
+            };
         </script>
+        <script src="{% static 'js/juego.js' %}" defer></script>
     </head>
 
     {% block titulo %}

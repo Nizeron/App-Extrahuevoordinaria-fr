@@ -9,10 +9,11 @@ import json
 @ensure_csrf_cookie        # asegura el CSRF para la primera carga
 def juego_view(request):
     progreso, _ = ProgresoJugador.objects.get_or_create(user=request.user)
-
+    items=Items.objects.all()
     return render(request, 'game.html', {
         "puntos": progreso.puntos,
         "click_power": progreso.click_power,
+        'items':items,
     })
 
 
@@ -59,6 +60,3 @@ def testing(request):
     items=Items.objects.all()
     return render(request,'testing.html',{'items':items})
 
-def items_juego(request):
-    items=Items.objects.all()
-    return render(request, 'game.html',{'items':items})

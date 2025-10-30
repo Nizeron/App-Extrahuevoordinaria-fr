@@ -24,6 +24,7 @@
                         <div class="shop-item" data-cost={{item.costo}} data-power={{item.incremento}} id='personal'> <!--agregar variable de cantidad y resolver id-->
                             <img src="{% static 'images/personal.png' %}">
                             <span>{{item.nombre}}<br><span class="cost">Costo: {{item.costo}}</span></span>
+                            <h6>{{item.descripcion}}</h6>
                         </div>
             {% endfor %}
         </div>

@@ -1,19 +1,32 @@
-{% extends 'items_layout.html' %}
+{% extends "items_layout.html" %}
 {% load static %}
-{% block titulo %}
-    <title>TESTING</title>
-{% endblock titulo %}
+<!DOCTYPE html>
+<html lang="es">
+<body>
+    {% block boton %}
+        <div class="game-container">
+            <h1>♻️ Juego de Reciclaje</h1>
 
+            <!-- ✅ Muestra puntos del backend correctamente -->
+            <p>Puntos: <span id="puntos">{{ puntos|default:"0" }}</span></p>
+
+            <button id="clicker" class="pixel-button">
+                <img class="recycle-icon" src="{% static 'images/Pixel-Art-Water-Bottle-6.webp' %}" alt="Botella">
+                ¡Reciclar!
+            </button>
+        </div>
+    {% endblock boton %}
     {% block items %}
-
-            <h1>Items</h1>
-                <div class="shop-container">
-                    <h2>Tienda</h2>
-                    {% for item in items %}
-                        <div class="shop-item" data-cost={{item.costo}} data-power={{item.incremento}}> <!--agregar variable de cantidad y resolver id-->
+        <div class="shop-container">
+            <h2>Tienda</h2>
+            
+            {% for item in items %}
+                        <div class="shop-item" data-cost={{item.costo}} data-power={{item.incremento}} id='personal'> <!--agregar variable de cantidad y resolver id-->
                             <img src="{% static 'images/personal.png' %}">
                             <span>{{item.nombre}}<br><span class="cost">Costo: {{item.costo}}</span></span>
-                </div>
-                {% endfor %}
-
-    {% endblock %}
+                        </div>
+            {% endfor %}
+        </div>
+    {% endblock items %}
+</body>
+</html>

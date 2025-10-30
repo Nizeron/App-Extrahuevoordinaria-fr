@@ -1,22 +1,36 @@
-    {% block estilo %}
+
     {% load static %}
    <!DOCTYPE html>
     <html lang="en">
     <head>
-
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="{% static 'css/estilo.css' %}">
         <link rel="stylesheet static" href="{% static 'css/gamestatic.css'%}">
-            <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
-    {% endblock %}
+        <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+        <script>
+            window.__INIT__ = {
+            puntos: {{ puntos|default:"0"|safe }},
+            click_power: {{ click_power|default:"1"|safe }}
+        };
+        </script>
+    </head>
+
     {% block titulo %}
-        <title>---</title>
+        <head>
+            <title>---</title>
+        </head>
     {% endblock  %}
-</head>
 <body>
+    {% block boton %}
+    <body class='game-container'>
+        default
+    </body>
+    {% endblock boton %}
     {% block items %}
-    default
+    <body class='shop-container'>
+        defaultS
+    </body>
     {% endblock  %}
 </body>
 </html>

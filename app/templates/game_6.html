@@ -3,9 +3,9 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Juego Incremental</title>
+    <title>Ciudad Perfecta - Nivel 6</title>
 
-    <!-- Pasar datos a JS -->
+    <!-- ✅ Datos desde Django hacia JS -->
     <script>
     window.__INIT__ = {
         puntos: {{ puntos|default:"0"|safe }},
@@ -13,32 +13,33 @@
     };
     </script>
 
-    <!-- Archivos externos -->
     <script src="{% static 'js/juego.js' %}" defer></script>
     <link rel="stylesheet" href="{% static 'css/estilo.css' %}">
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
 
-    
-
 </head>
 
 <body>
-
     <img class="bg-fullscreen"
-         src="{% static 'images/ciudad basura.png' %}"
+         src="{% static 'images/ciudad luz.png' %}"
          alt="" aria-hidden="true">
-    <!-- IZQUIERDA: CLICKER -->
+
     <div class="game-container">
-        <h1>♻️ Reciclaje</h1>
+        <h1>🌍 Ciudad Ecológica Perfecta</h1>
         <p>Puntos: <span id="puntos">{{ puntos|default:"0" }}</span></p>
 
         <button id="clicker" class="pixel-button">
             <img class="recycle-icon" src="{% static 'images/Pixel-Art-Water-Bottle-6.webp' %}" alt="Botella">
             ¡Reciclar!
         </button>
+
+        <p style="font-size: 10px; margin-top: 10px;">
+            ¡Felicidades! Completaste todas las mejoras.  
+            Ahora tu ciudad es sustentable, limpia y eficiente.
+        </p>
     </div>
 
-    <!-- CENTRO: TIENDA -->
+    <!-- ✅ La tienda sigue disponible para subir puntos -->
     <div class="shop-container">
         <h2>Tienda</h2>
 
@@ -73,10 +74,25 @@
         </div>
     </div>
 
-    <!-- DERECHA: INFORMACIÓN DE MEJORAS -->
-    <div id="info-box" class="info-box hidden">
-        <h3 id="info-title"></h3>
-        <p id="info-text"></p>
+    <!-- ✅ Panel final con TODA la información -->
+    <div class="info-box">
+        <h3>Captura de Carbono</h3>
+        <p>Los filtros atrapan CO₂ de la atmósfera y ayudan a limpiar el aire.</p>
+
+        <h3>Energía Solar</h3>
+        <p>Genera electricidad sin contaminar y reduce el uso de combustibles fósiles.</p>
+
+        <h3>Transporte Eléctrico</h3>
+        <p>Vehículos eléctricos reducen la contaminación del aire y el ruido.</p>
+
+        <h3>Techos Verdes</h3>
+        <p>Las plantas en los techos absorben CO₂, mejoran la calidad del aire y bajan la temperatura urbana.</p>
+
+        <h3>Ahorro de Agua</h3>
+        <p>Sistemas eficientes evitan desperdicio de agua y reducen el consumo energético.</p>
+
+        <h3>Luces LED Inteligentes</h3>
+        <p>Consumen menos energía, duran más y reducen toneladas de CO₂ emitidas a la atmósfera.</p>
     </div>
 
 </body>

@@ -3,9 +3,9 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Juego Incremental</title>
+    <title>Ciudad Limpia - Nivel 2</title>
 
-    <!-- Pasar datos a JS -->
+    <!-- ✅ Datos del backend -->
     <script>
     window.__INIT__ = {
         puntos: {{ puntos|default:"0"|safe }},
@@ -13,23 +13,20 @@
     };
     </script>
 
-    <!-- Archivos externos -->
     <script src="{% static 'js/juego.js' %}" defer></script>
     <link rel="stylesheet" href="{% static 'css/estilo.css' %}">
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
 
     
-
 </head>
 
 <body>
-
     <img class="bg-fullscreen"
-         src="{% static 'images/ciudad basura.png' %}"
+         src="{% static 'images/ciudad solar.png' %}"
          alt="" aria-hidden="true">
-    <!-- IZQUIERDA: CLICKER -->
+
     <div class="game-container">
-        <h1>♻️ Reciclaje</h1>
+        <h1>♻️ Ciudad Limpia - Nivel 2</h1>
         <p>Puntos: <span id="puntos">{{ puntos|default:"0" }}</span></p>
 
         <button id="clicker" class="pixel-button">
@@ -38,7 +35,6 @@
         </button>
     </div>
 
-    <!-- CENTRO: TIENDA -->
     <div class="shop-container">
         <h2>Tienda</h2>
 
@@ -73,10 +69,13 @@
         </div>
     </div>
 
-    <!-- DERECHA: INFORMACIÓN DE MEJORAS -->
-    <div id="info-box" class="info-box hidden">
-        <h3 id="info-title"></h3>
-        <p id="info-text"></p>
+    <!-- ✅ Información acumulada de nivel 1 y 2 -->
+    <div class="info-box">
+        <h3>Captura de Carbono</h3>
+        <p>Los filtros de CO₂ reducen toxinas en el aire y hacen ciudades más limpias.</p>
+
+        <h3>Energía Solar</h3>
+        <p>La luz solar genera electricidad sin contaminar y reduce combustibles fósiles.</p>
     </div>
 
 </body>

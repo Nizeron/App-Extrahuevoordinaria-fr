@@ -3,9 +3,9 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Juego Incremental</title>
+    <title>Ciudad Limpia - Nivel 5</title>
 
-    <!-- Pasar datos a JS -->
+    <!-- ✅ Datos desde Django hacia JS -->
     <script>
     window.__INIT__ = {
         puntos: {{ puntos|default:"0"|safe }},
@@ -13,23 +13,20 @@
     };
     </script>
 
-    <!-- Archivos externos -->
     <script src="{% static 'js/juego.js' %}" defer></script>
     <link rel="stylesheet" href="{% static 'css/estilo.css' %}">
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
 
-    
 
 </head>
 
 <body>
-
     <img class="bg-fullscreen"
-         src="{% static 'images/ciudad basura.png' %}"
+         src="{% static 'images/ciudad agua.png' %}"
          alt="" aria-hidden="true">
-    <!-- IZQUIERDA: CLICKER -->
+
     <div class="game-container">
-        <h1>♻️ Reciclaje</h1>
+        <h1>♻️ Ciudad Limpia - Nivel 5</h1>
         <p>Puntos: <span id="puntos">{{ puntos|default:"0" }}</span></p>
 
         <button id="clicker" class="pixel-button">
@@ -38,12 +35,11 @@
         </button>
     </div>
 
-    <!-- CENTRO: TIENDA -->
     <div class="shop-container">
         <h2>Tienda</h2>
 
         <div class="shop-item" data-cost="20" data-power="1" id="carbono">
-            <img src="{% static 'images/personal.png' %}">
+            <img src="{% static 'images/ciudad agua.png' %}">
             <span>Captura de Carbono<br><span class="cost">Costo: 20</span></span>
         </div>
 
@@ -73,10 +69,22 @@
         </div>
     </div>
 
-    <!-- DERECHA: INFORMACIÓN DE MEJORAS -->
-    <div id="info-box" class="info-box hidden">
-        <h3 id="info-title"></h3>
-        <p id="info-text"></p>
+    <!-- ✅ Información acumulada hasta nivel 5 -->
+    <div class="info-box">
+        <h3>Captura de Carbono</h3>
+        <p>Los filtros atrapan CO₂ de la atmósfera y ayudan a limpiar el aire.</p>
+
+        <h3>Energía Solar</h3>
+        <p>Genera electricidad sin contaminar y reduce el uso de combustibles fósiles.</p>
+
+        <h3>Transporte Eléctrico</h3>
+        <p>Vehículos eléctricos reducen la contaminación del aire y el ruido.</p>
+
+        <h3>Techos Verdes</h3>
+        <p>Plantas en los techos absorben CO₂, mejoran el aire y bajan la temperatura urbana.</p>
+
+        <h3>Ahorro de Agua</h3>
+        <p>Sistemas eficientes evitan desperdicio de agua y reducen el consumo energético.</p>
     </div>
 
 </body>

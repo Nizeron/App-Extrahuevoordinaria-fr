@@ -3,9 +3,9 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Juego Incremental</title>
+    <title>Ciudad Mejorada - Nivel 1</title>
 
-    <!-- Pasar datos a JS -->
+    <!-- ✅ Pasar progreso al JS -->
     <script>
     window.__INIT__ = {
         puntos: {{ puntos|default:"0"|safe }},
@@ -13,23 +13,22 @@
     };
     </script>
 
-    <!-- Archivos externos -->
     <script src="{% static 'js/juego.js' %}" defer></script>
     <link rel="stylesheet" href="{% static 'css/estilo.css' %}">
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
-
-    
 
 </head>
 
 <body>
 
+    <!-- ✅ ESTA ES LA LÍNEA DONDE SE CARGA LA IMAGEN DEL FONDO -->
     <img class="bg-fullscreen"
-         src="{% static 'images/ciudad basura.png' %}"
+         src="{% static 'images/ciudad carbono.png' %}"
          alt="" aria-hidden="true">
-    <!-- IZQUIERDA: CLICKER -->
+
+    <!-- PANEL PRINCIPAL -->
     <div class="game-container">
-        <h1>♻️ Reciclaje</h1>
+        <h1>♻️ Ciudad Limpia - Nivel 1</h1>
         <p>Puntos: <span id="puntos">{{ puntos|default:"0" }}</span></p>
 
         <button id="clicker" class="pixel-button">
@@ -38,7 +37,7 @@
         </button>
     </div>
 
-    <!-- CENTRO: TIENDA -->
+    <!-- TIENDA -->
     <div class="shop-container">
         <h2>Tienda</h2>
 
@@ -73,10 +72,12 @@
         </div>
     </div>
 
-    <!-- DERECHA: INFORMACIÓN DE MEJORAS -->
-    <div id="info-box" class="info-box hidden">
-        <h3 id="info-title"></h3>
-        <p id="info-text"></p>
+    <!-- ✅ CAJA INFORMATIVA QUE SE MUESTRA DESDE EL NIVEL 1 -->
+    <div id="info-box" class="info-box">
+        <h3 id="info-title">Captura de Carbono</h3>
+        <p id="info-text">
+            Los filtros de captura de CO₂ ayudan a limpiar el aire y reducen gases tóxicos en la ciudad.
+        </p>
     </div>
 
 </body>

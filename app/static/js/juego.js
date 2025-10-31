@@ -8,6 +8,28 @@ document.addEventListener('DOMContentLoaded', () => {
     const clickerBtn = document.getElementById('clicker');
     const tiendaItems = document.querySelectorAll('.shop-item');
 
+    // ✅ TOAST RESTAURADO
+    function showToast(text) {
+        const t = document.createElement('div');
+        t.textContent = text;
+        Object.assign(t.style, {
+            position: 'fixed',
+            right: '20px',
+            bottom: '20px',
+            background: 'rgba(0,0,0,0.85)',
+            color: 'white',
+            padding: '10px 14px',
+            borderRadius: '6px',
+            fontFamily: 'monospace',
+            fontSize: '13px',
+            zIndex: 99999,
+            transition: 'opacity 0.6s'
+        });
+        document.body.appendChild(t);
+        setTimeout(() => t.style.opacity = '0', 1200);
+        setTimeout(() => t.remove(), 1800);
+    }
+
     // Mensajes (IDs deben coincidir con el HTML)
     const mensajes = {
         carbono: { titulo: "Captura de Carbono", texto: "Atrapa CO₂ y reduce el calentamiento global." },
@@ -45,10 +67,8 @@ document.addEventListener('DOMContentLoaded', () => {
         .then(res => res.json())
         .then(data => {
             console.log("Guardado:", data);
-            // Si el backend cambió el template, redirige
             if (data.template_actual) {
                 const destino = `/${data.template_actual}`;
-                // Evita recargar si ya estás en ese template
                 const current = window.location.pathname.replace(/^\//, '');
                 if (current !== data.template_actual) {
                     window.location.href = destino;
@@ -80,13 +100,18 @@ document.addEventListener('DOMContentLoaded', () => {
         function comprarItem() {
             const costo = parseInt(this.getAttribute('data-cost'), 10);
             const poder = parseInt(this.getAttribute('data-power'), 10);
-            if (isNaN(costo) || puntos < costo) return;
+
+            // Si no alcanza, muestra TOAST (igual que versión antigua)
+            if (isNaN(costo) || puntos < costo) {
+                showToast(`Necesitas ${costo} puntos`);
+                return;
+            }
 
             puntos -= costo;
             puntosPorClick += (isNaN(poder) ? 0 : poder);
             actualizarPuntos();
 
-            // Muestra el mensaje en el panel lateral (info-box)
+            // Muestra mensaje en el panel lateral
             const infoBox = document.getElementById('info-box');
             const infoTitle = document.getElementById('info-title');
             const infoText = document.getElementById('info-text');
@@ -97,7 +122,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 infoBox.classList.remove('hidden');
             }
 
-            // Envía la mejora al backend (para cambio de template si corresponde)
+            // ✅ TOAST DE COMPRA RESTAURADO
+            showToast(`Compraste ${msg.titulo} +${poder}/click`);
+
+            // Enviar a backend
             guardarProgreso(this.id);
         }
     });

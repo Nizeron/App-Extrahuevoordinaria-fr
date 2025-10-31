@@ -1,51 +1,94 @@
+/* === FUENTE PIXEL RETRO === */
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+/* === FONDO GENERAL === */
 body {
     background-image: url('../images/ciudad1.avif');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
     background-attachment: fixed;
-    color: #fff;
     font-family: "Press Start 2P", monospace;
+    color: #fff;
     margin: 0;
     height: 100vh;
     display: flex;
     justify-content: center;
     align-items: flex-start;
-    gap: 40px;
-    padding-top: 0px;
+    gap: 50px;
+    padding-top: 40px;
+    overflow: hidden;
+    animation: bgMove 20s linear infinite alternate;
 }
 
+/* 🌃 Movimiento leve del fondo para dar vida */
+@keyframes bgMove {
+    0% { background-position: center top; }
+    100% { background-position: center bottom; }
+}
+
+/* === CONTENEDOR PRINCIPAL DEL JUEGO === */
 .game-container {
-    background-color: rgba(0, 0, 0, 0.6);
+    background: linear-gradient(145deg, rgba(0, 20, 0, 0.8), rgba(0, 50, 25, 0.8));
     padding: 30px;
-    border-radius: 12px;
-    width: 360px;
+    border-radius: 16px;
+    width: 380px;
     text-align: center;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.6);
+    border: 4px solid #00ff99;
+    box-shadow: 0 0 25px #00ff99, inset 0 0 8px #00ff99;
+    text-shadow: 1px 1px 0 #002b11;
+    animation: glowPulse 2s infinite alternate;
+}
+
+/* 💚 Brillo pulsante */
+@keyframes glowPulse {
+    0% { box-shadow: 0 0 15px #00ff99, inset 0 0 8px #00ff99; }
+    100% { box-shadow: 0 0 25px #00ff99, inset 0 0 15px #00ff99; }
+}
+
+/* === TÍTULOS Y PUNTOS === */
+h1 {
+    font-size: 16px;
+    color: #00ff99;
+    text-shadow: 0 0 8px #00ffcc, 0 0 15px #00ffaa;
+    letter-spacing: 2px;
+    margin-bottom: 20px;
 }
 
 #puntos {
-    font-size: 20px;
+    font-size: 22px;
     color: #00ff66;
+    text-shadow: 0 0 8px #00ff66, 0 0 16px #00ffcc;
 }
 
+/* === BOTÓN PRINCIPAL (PIXEL ART RETRO) === */
 .pixel-button {
     background-color: #00a86b;
     color: white;
     border: 4px solid #004d3a;
     padding: 20px;
     cursor: pointer;
-    box-shadow: 0 0 0 4px #00694d, 0 8px 0 4px #004d3a;
+    font-family: "Press Start 2P", monospace;
+    text-transform: uppercase;
+    box-shadow: 0 0 0 4px #00ff66, 0 8px 0 4px #004d3a;
     transition: all 0.1s ease;
     display: inline-flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     image-rendering: pixelated;
+    position: relative;
+    animation: glowBtn 1.5s infinite alternate;
+}
+
+@keyframes glowBtn {
+    0% { box-shadow: 0 0 10px #00ff66, 0 0 20px #00ff99 inset; }
+    100% { box-shadow: 0 0 20px #00ffcc, 0 0 40px #00ffaa inset; }
 }
 
 .pixel-button:hover {
     background-color: #00c97b;
+    transform: scale(1.05);
 }
 
 .pixel-button:active {
@@ -53,50 +96,131 @@ body {
     box-shadow: 0 0 0 4px #00694d, 0 4px 0 4px #004d3a;
 }
 
+/* === ICONO DE RECICLAJE === */
 .recycle-icon {
     width: 48px;
     height: 48px;
     margin-bottom: 10px;
     image-rendering: pixelated;
+    filter: drop-shadow(0 0 5px #00ff66);
+    animation: float 2s ease-in-out infinite;
 }
 
+/* efecto de "flotar" en el icono */
+@keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-6px); }
+}
+
+/* === TIENDA DE MEJORAS === */
 .shop-container {
-    background-color: rgba(0, 0, 0, 0.6);
-    padding: 20px;
+    background: linear-gradient(145deg, rgba(10,10,10,0.9), rgba(0,40,20,0.9));
     border-radius: 12px;
-    width: 280px;
+    border: 3px solid #00ff99;
+    width: 300px;
     max-height: 80vh;
     overflow-y: auto;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.6);
+    box-shadow: 0 0 25px #00ff99;
+    padding: 25px;
+    animation: neonShop 2s ease-in-out infinite alternate;
 }
 
+/* leve parpadeo verde del marco */
+@keyframes neonShop {
+    0% { box-shadow: 0 0 10px #00ff99; }
+    100% { box-shadow: 0 0 25px #00ffaa; }
+}
+
+.shop-container h2 {
+    font-size: 12px;
+    color: #00ffaa;
+    text-align: center;
+    text-shadow: 0 0 8px #00ff99;
+    margin-bottom: 20px;
+}
+
+/* === ITEM DE TIENDA === */
 .shop-item {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    border: 2px solid #444;
+    border: 2px solid #006b44;
     padding: 10px;
-    margin-bottom: 10px;
-    cursor: pointer;
-    background-color: #222;
-    transition: background 0.2s;
+    margin-bottom: 12px;
+    background-color: #111;
+    transition: background 0.2s, transform 0.1s;
+    border-radius: 8px;
+    box-shadow: inset 0 0 6px #00ff66;
 }
 
 .shop-item:hover {
-    background-color: #333;
+    background-color: #002b11;
+    transform: scale(1.05);
+    box-shadow: 0 0 10px #00ffaa, inset 0 0 8px #00ffaa;
+}
+
+.shop-item.bought {
+    animation: flash 0.4s ease-in-out;
+}
+
+@keyframes flash {
+    0% { background-color: #00a86b; }
+    100% { background-color: #111; }
 }
 
 .shop-item img {
     width: 40px;
     height: 40px;
     image-rendering: pixelated;
+    filter: drop-shadow(0 0 4px #00ff66);
 }
 
 .shop-item span {
     font-size: 10px;
+    color: #fff;
+    text-shadow: 0 0 6px #00ff99;
 }
 
 .cost {
     color: #00ff66;
-   font-size: 8px;
+    font-size: 8px;
+}
+
+/* === PARTICULAS +1 === */
+.particle {
+    position: absolute;
+    font-family: "Press Start 2P", monospace;
+    color: #00ff66;
+    font-size: 12px;
+    pointer-events: none;
+    animation: rise 0.8s ease-out forwards;
+    text-shadow: 0 0 6px #00ff66;
+}
+
+@keyframes rise {
+    from { transform: translateY(0); opacity: 1; }
+    to { transform: translateY(-40px); opacity: 0; }
+}
+
+/* === SCROLL PERSONALIZADO === */
+.shop-container::-webkit-scrollbar {
+    width: 6px;
+}
+.shop-container::-webkit-scrollbar-thumb {
+    background: #00ff99;
+    border-radius: 3px;
+}
+.shop-container::-webkit-scrollbar-thumb:hover {
+    background: #00ffaa;
+}
+
+/* --- Botellitas animadas --- */
+.botellita {
+    position: fixed;
+    width: 32px;
+    height: 32px;
+    pointer-events: none;
+    z-index: 999;
+    transform-origin: center;
+    image-rendering: pixelated;
 }

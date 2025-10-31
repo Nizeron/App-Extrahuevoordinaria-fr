@@ -32,12 +32,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Mensajes (IDs deben coincidir con el HTML)
     const mensajes = {
-        carbono: { titulo: "Captura de Carbono", texto: "Atrapa CO₂ y reduce el calentamiento global." },
-        solar:   { titulo: "Energía Solar",       texto: "Produce energía limpia y disminuye el uso de combustibles fósiles." },
-        buses:   { titulo: "Transporte Eléctrico",texto: "Reduce smog y ruido, mejora la calidad del aire." },
-        techos:  { titulo: "Techos Verdes",       texto: "Absorben CO₂ y enfrían la ciudad." },
-        agua:    { titulo: "Ahorro de Agua",      texto: "Menor consumo y menor gasto energético de tratamiento." },
-        luces:   { titulo: "Luces LED",           texto: "Ahorran energía y duran mucho más." }
+        carbono: { titulo: "Captura de Carbono", texto: "Los filtros de captura de CO₂ ayudan a limpiar el aire y reducen gases tóxicos en la ciudad." },
+        solar:   { titulo: "Energía Solar",       texto: "La luz solar genera electricidad sin contaminar y reduce combustibles fósiles." },
+        buses:   { titulo: "Transporte Eléctrico",texto: "Autos y buses eléctricos reducen contaminación del aire y ruido en la ciudad." },
+        techos:  { titulo: "Techos Verdes",       texto: "Las plantas en los techos absorben CO₂, mejoran la calidad del aire y bajan la temperatura urbana." },
+        agua:    { titulo: "Ahorro de Agua",      texto: "Sistemas eficientes evitan desperdicio de agua y reducen el consumo energético." },
+        luces:   { titulo: "Luces LED",           texto: "Consumen menos energía, duran más y reducen toneladas de CO₂ emitidas a la atmósfera." }
     };
 
     function actualizarPuntos() {

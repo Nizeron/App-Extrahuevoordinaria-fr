@@ -56,8 +56,17 @@ def guardar_progreso(request):
         "click_power": progreso.click_power,
     })
 
-def guardar_cantidad(request):
+def guardar_comprado(request):
     if request.method =='POST':
+        try:
+            data=json.loads(request.body)
+        except ValueError:
+            pass
+    if 'cantidad' in data:
+        try:
+            Items.cantidad=int(data['cantidad'])
+        except ValueError:
+            pass
         return JsonResponse({
             'cantidad':Items.cantidad,
             'incremento':Items.incremento,

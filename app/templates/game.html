@@ -37,11 +37,12 @@
                             <!--hacer cantidad modular-->
                             {{item.cantidad}}
                         </div>
-                        <div class='incremento' data-incremento={{item.incremento}}>
-                            <!--muestra incremento-->
-                        </div>
                         <div class='descripcion' align>
                             <br><h6>{{item.descripcion}}</h6>
+                        </div>
+                        <div class='incremento' data-incremento={{item.incremento}}>
+                           <br>
+                            {{item.incremento}}<!--muestra incremento-->
                         </div>
                     </div>
         {% endfor %}

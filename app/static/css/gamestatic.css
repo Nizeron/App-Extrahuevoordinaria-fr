@@ -19,14 +19,8 @@ body {
     gap: 50px;
     padding-top: 40px;
     overflow: hidden;
-    animation: bgMove 20s linear infinite alternate;
 }
 
-/* movimiento leve del fondo para dar vida */
-@keyframes bgMove {
-    20% { background-position: center top; }
-    80% { background-position: center bottom; }
-}
 
 /* contenedor del boton principal */
 .game-container {
@@ -154,7 +148,12 @@ h1 {
 .shop-item.bought {
     animation: flash 0.4s ease-in-out;
 }
-
+.cantidad {
+    color: red;
+}
+.incremento {
+    color: blue;
+}
 @keyframes flash {
     0% { background-color: #00a86b; }
     100% { background-color: #111; }

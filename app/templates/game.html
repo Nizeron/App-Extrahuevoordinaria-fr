@@ -9,17 +9,17 @@
 <body>
     {% block boton %}
         <div class="game-container">
-        <h1>♻️ Juego de Reciclaje</h1>
+            <h1>Juego de Reciclaje</h1>
 
-        <!-- ✅ Muestra puntos del backend correctamente -->
-        <p>Puntos: <span id="puntos">{{ puntos|default:"0" }}</span></p>
+            <!-- muestra puntos del backend correctamente -->
+            <p>Puntos: <span id="puntos">{{ puntos|default:"0" }}</span></p>
 
-        <button id="clicker" class="pixel-button">
-            <img class="recycle-icon" src="{% static 'images/Pixel-Art-Water-Bottle-6.webp' %}" alt="Botella">
-            ¡Reciclar!
-        </button>
-        <div>
-            <img src="{% static 'images/gifs/test.gif' %}">
+            <button id="clicker" class="pixel-button">
+                <img class="recycle-icon" src="{% static 'images/Pixel-Art-Water-Bottle-6.webp' %}" alt="Botella">
+                ¡Reciclar!
+            </button>
+            <div>
+                <img src="{% static 'images/gifs/test.gif' %}" class='gif'>
         </div>
     </div>
     {% endblock boton %}
@@ -30,11 +30,15 @@
         
         {% for item in items %}
         
-                    <div class="shop-item" data-cost={{item.costo}} data-power={{item.incremento}} id='personal'> <!--agregar variable de cantidad y resolver id-->
+                    <div class="shop-item" data-cost={{item.costo}} data-power={{item.incremento}} data-role='button' data-tabidex=0> <!--agregar variable de cantidad y resolver id-->
                         <img src="{% static 'images/personal.png' %}">
                         <span>{{item.nombre}}<br><span class="cost">Costo: {{item.costo}}</span></span>
-                        <div class='cantidad'>
-                            0 <!--hacer cantidad modular-->
+                        <div class='cantidad' data-cantidad={{item.cantidad}}> 
+                            <!--hacer cantidad modular-->
+                            {{item.cantidad}}
+                        </div>
+                        <div class='incremento' data-incremento={{item.incremento}}>
+                            <!--muestra incremento-->
                         </div>
                         <div class='descripcion' align>
                             <br><h6>{{item.descripcion}}</h6>

@@ -4,17 +4,21 @@ document.addEventListener('DOMContentLoaded', () => {
     const INIT = window.__INIT__ || {};
     let puntos = (typeof INIT.puntos === "number") ? INIT.puntos : 0;
     let puntosPorClick = (typeof INIT.click_power === "number") ? INIT.click_power : 1;
+    let cantidadItems = 0;
 
-    // --- Referencias DOM ---
     const puntosSpan = document.getElementById('puntos');
     const clickerBtn = document.getElementById('clicker');
     const tiendaItems = document.querySelectorAll('.shop-item');
-    //const contadorItems = hacer elemento para contar la cantidad de elementos con clase 'contador'
-    // --- Helpers ---
+    const contadorItems = document.querySelectorAll('.cantidad')
+    //llaman clases e ID de /game para usar
+    
     function actualizarPuntos() {
         if (puntosSpan) puntosSpan.textContent = puntos;
     }
 
+    function actualizarCantidad(){
+        if (contadorItems) contadorItems.textContent="Incremento"+toString(cantidadItems);
+    }
     function showToast(text) {
         const t = document.createElement('div');
         t.textContent = text;
@@ -35,7 +39,7 @@ document.addEventListener('DOMContentLoaded', () => {
         return null;
     }
 
-    // ✅ Guardar solo puntos, click_power y template
+    //guarda puntos, click_power y template
     function guardarProgreso() {
         fetch("/guardar/", {
             method: "POST",
@@ -50,11 +54,11 @@ document.addEventListener('DOMContentLoaded', () => {
             })
         })
         .then(res => res.json())
-        .then(data => console.log("✅ Progreso guardado:", data))
-        .catch(err => console.error("❌ Error guardando progreso:", err));
+        .then(data => console.log("Progreso guardado:", data))
+        .catch(err => console.error("Error guardando progreso:", err));
     }
 
-    // --- Click principal ---
+    // boton principal
     if (clickerBtn) {
         clickerBtn.addEventListener('click', () => {
             puntos += puntosPorClick;
@@ -64,11 +68,8 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // --- Tienda: compra de upgrades que aumentan el click_power ---
+    // manejo de tienda
     tiendaItems.forEach(item => {
-        // accesibilidad
-        if (!item.hasAttribute('role')) item.setAttribute('role', 'button');
-        if (!item.hasAttribute('tabindex')) item.setAttribute('tabindex', '0');
 
         item.addEventListener('click', comprarItem);
         item.addEventListener('keydown', ev => {
@@ -78,16 +79,18 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
+        //llama las variables de costo, incremento y cantidad
         function comprarItem() {
             const costo = parseInt(this.getAttribute('data-cost'), 10);
             const poder = parseInt(this.getAttribute('data-power'), 10);
-
+            let contador = parseInt(this.getAttribute('data-contador'), 0);
             if (isNaN(costo)) return;
 
+            //compra fallida, shackey shake
             if (puntos < costo) {
                 this.animate(
                     [{ transform: 'translateX(-6px)' }, { transform: 'translateX(6px)' }, { transform: 'translateX(0)' }],
-                    { duration: 180 }
+                    { duration: 250 }
                 );
                 showToast(`Necesitas ${costo} puntos`);
                 return;
@@ -96,13 +99,17 @@ document.addEventListener('DOMContentLoaded', () => {
             // aplica compra
             puntos -= costo;
             puntosPorClick += (isNaN(poder) ? 0 : poder);
-
+            cantidadItems= contador + 1;
             actualizarPuntos();
+            actualizarCantidad();
             guardarProgreso();
+
 
             // feedback visual
             this.classList.add('bought');
             setTimeout(() => this.classList.remove('bought'), 400);
+            //agregar anim del num de cantidad para cada compra
+
 
             console.log(`✅ Compraste ${this.id} → nuevo PPC: ${puntosPorClick}`);
             showToast(`Mejora aplicada! +${poder}/click`);

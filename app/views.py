@@ -30,21 +30,21 @@ def guardar_progreso(request):
 
     progreso, _ = ProgresoJugador.objects.get_or_create(user=request.user)
 
-    # ✅ puntos
+    # puntos
     if "puntos" in data:
         try:
             progreso.puntos = int(data["puntos"])
         except ValueError:
             pass
 
-    # ✅ click_power
+    # click_power
     if "click_power" in data:
         try:
             progreso.click_power = int(data["click_power"])
         except ValueError:
             pass
 
-    # ✅ template_actual (solo texto)
+    # template_actual (solo texto)
     if "template_actual" in data:
         progreso.template_actual = str(data["template_actual"])
 
@@ -55,6 +55,13 @@ def guardar_progreso(request):
         "puntos": progreso.puntos,
         "click_power": progreso.click_power,
     })
+
+def guardar_cantidad(request):
+    if request.method =='POST':
+        return JsonResponse({
+            'cantidad':Items.cantidad,
+            'incremento':Items.incremento,
+        })
 
 def testing(request):
     items=Items.objects.all()

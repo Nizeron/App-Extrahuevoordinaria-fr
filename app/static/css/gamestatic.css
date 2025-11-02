@@ -1,7 +1,8 @@
-/* === FUENTE PIXEL RETRO === */
+/*font */
 @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
 
-/* === FONDO GENERAL === */
+
+/* background */
 body {
     background-image: url('../images/ciudad1.avif');
     background-size: cover;
@@ -21,13 +22,13 @@ body {
     animation: bgMove 20s linear infinite alternate;
 }
 
-/* 🌃 Movimiento leve del fondo para dar vida */
+/* movimiento leve del fondo para dar vida */
 @keyframes bgMove {
-    0% { background-position: center top; }
-    100% { background-position: center bottom; }
+    20% { background-position: center top; }
+    80% { background-position: center bottom; }
 }
 
-/* === CONTENEDOR PRINCIPAL DEL JUEGO === */
+/* contenedor del boton principal */
 .game-container {
     background: linear-gradient(145deg, rgba(0, 20, 0, 0.8), rgba(0, 50, 25, 0.8));
     padding: 30px;
@@ -37,20 +38,13 @@ body {
     border: 4px solid #00ff99;
     box-shadow: 0 0 25px #00ff99, inset 0 0 8px #00ff99;
     text-shadow: 1px 1px 0 #002b11;
-    animation: glowPulse 2s infinite alternate;
 }
 
-/* 💚 Brillo pulsante */
-@keyframes glowPulse {
-    0% { box-shadow: 0 0 15px #00ff99, inset 0 0 8px #00ff99; }
-    100% { box-shadow: 0 0 25px #00ff99, inset 0 0 15px #00ff99; }
-}
-
-/* === TÍTULOS Y PUNTOS === */
+/* titulo/puntos */
 h1 {
     font-size: 16px;
     color: #00ff99;
-    text-shadow: 0 0 8px #00ffcc, 0 0 15px #00ffaa;
+    text-shadow: 0 0 8px #00ffcc;
     letter-spacing: 2px;
     margin-bottom: 20px;
 }
@@ -61,7 +55,7 @@ h1 {
     text-shadow: 0 0 8px #00ff66, 0 0 16px #00ffcc;
 }
 
-/* === BOTÓN PRINCIPAL (PIXEL ART RETRO) === */
+/* diseño boton principal*/
 .pixel-button {
     background-color: #00a86b;
     color: white;
@@ -70,7 +64,7 @@ h1 {
     cursor: pointer;
     font-family: "Press Start 2P", monospace;
     text-transform: uppercase;
-    box-shadow: 0 0 0 4px #00ff66, 0 8px 0 4px #004d3a;
+    box-shadow:  0 8px 0 4px #004d3a;
     transition: all 0.1s ease;
     display: inline-flex;
     flex-direction: column;
@@ -78,13 +72,10 @@ h1 {
     justify-content: center;
     image-rendering: pixelated;
     position: relative;
-    animation: glowBtn 1.5s infinite alternate;
+    border-radius: 10px;
+
 }
 
-@keyframes glowBtn {
-    0% { box-shadow: 0 0 10px #00ff66, 0 0 20px #00ff99 inset; }
-    100% { box-shadow: 0 0 20px #00ffcc, 0 0 40px #00ffaa inset; }
-}
 
 .pixel-button:hover {
     background-color: #00c97b;
@@ -96,13 +87,14 @@ h1 {
     box-shadow: 0 0 0 4px #00694d, 0 4px 0 4px #004d3a;
 }
 
-/* === ICONO DE RECICLAJE === */
+/* logo reciclaje*/
 .recycle-icon {
     width: 48px;
     height: 48px;
     margin-bottom: 10px;
+    border-radius: 2px;
     image-rendering: pixelated;
-    filter: drop-shadow(0 0 5px #00ff66);
+    filter: drop-shadow(0 0 5px #004d3a);
     animation: float 2s ease-in-out infinite;
 }
 
@@ -112,7 +104,7 @@ h1 {
     50% { transform: translateY(-6px); }
 }
 
-/* === TIENDA DE MEJORAS === */
+/* contenedor de tienda */
 .shop-container {
     background: linear-gradient(145deg, rgba(10,10,10,0.9), rgba(0,40,20,0.9));
     border-radius: 12px;
@@ -120,15 +112,15 @@ h1 {
     width: 300px;
     max-height: 80vh;
     overflow-y: auto;
-    box-shadow: 0 0 25px #00ff99;
     padding: 25px;
+    box-shadow: 0 0 25px #00ff99;
     animation: neonShop 2s ease-in-out infinite alternate;
 }
 
 /* leve parpadeo verde del marco */
 @keyframes neonShop {
     0% { box-shadow: 0 0 10px #00ff99; }
-    100% { box-shadow: 0 0 25px #00ffaa; }
+    50% { box-shadow: 0 0 25px #00ffaa; }
 }
 
 .shop-container h2 {
@@ -139,7 +131,7 @@ h1 {
     margin-bottom: 20px;
 }
 
-/* === ITEM DE TIENDA === */
+/* items */
 .shop-item {
     display: flex;
     align-items: center;

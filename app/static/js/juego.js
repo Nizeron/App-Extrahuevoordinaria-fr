@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const INIT = window.__INIT__ || {};
     let puntos = (typeof INIT.puntos === "number") ? INIT.puntos : 0;
     let puntosPorClick = (typeof INIT.click_power === "number") ? INIT.click_power : 1;
+    let cantidadItems = 0;
 
     const puntosSpan = document.getElementById('puntos');
     const clickerBtn = document.getElementById('clicker');

@@ -30,23 +30,23 @@
         
         {% for item in items %}
         
-                    <div class="shop-item" data-cost={{item.costo}} data-power={{item.incremento}} data-role='button' data-tabidex=0> <!--agregar variable de cantidad y resolver id-->
+                    <div class="shop-item" data-cost={{item.costo}} data-power={{item.incremento}} data-role='button' data-tabidex=0
+                        data-cantidad={{item.cantidad}} data-incremento={{item.incremento}} data-nombre="{{item.nombre}}">
+                         <!--agregar variable de cantidad y resolver id-->
                         <img src="{% static 'images/personal.png' %}">
-                        <span>{{item.nombre}}<br><span class="cost">Costo: {{item.costo}}</span></span>
-                        <div class='cantidad' data-cantidad={{item.cantidad}}> 
+                        <span> 
+                            <h3 class='nombre'>{{item.nombre}}</h3>
+                            <span class="cost">Costo: {{item.costo}}</span></span>
+                        <div class='cantidad' d> 
                             <!--hacer cantidad modular-->
                             {{item.cantidad}}
                         </div>
-                        <div class='incremento' data-incremento={{item.incremento}}>
+                        <div class='incremento' >
                             {{item.incremento}}
                             <!--muestra incremento-->
                         </div>
                         <div class='descripcion' align>
                             <br><h6>{{item.descripcion}}</h6>
-                        </div>
-                        <div class='incremento' data-incremento={{item.incremento}}>
-                           <br>
-                            {{item.incremento}}<!--muestra incremento-->
                         </div>
                     </div>
         {% endfor %}

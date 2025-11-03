@@ -10,6 +10,7 @@ import json
 def juego_view(request):
     progreso, _ = ProgresoJugador.objects.get_or_create(user=request.user)
     items=Items.objects.all()
+    print(items)
     return render(request, 'game.html', {
         "puntos": progreso.puntos,
         "click_power": progreso.click_power,
@@ -55,21 +56,30 @@ def guardar_progreso(request):
         "puntos": progreso.puntos,
         "click_power": progreso.click_power,
     })
-
+@login_required
 def guardar_comprado(request):
+    print("llegó ", request.body)
     if request.method =='POST':
         try:
             data=json.loads(request.body)
         except ValueError:
             pass
+    item = Items.objects.get(nombre= data['item'])
+    print(item)
     if 'cantidad' in data:
         try:
-            Items.cantidad=int(data['cantidad'])
+            item.cantidad=int(data['cantidad'])
         except ValueError:
             pass
-        return JsonResponse({
-            'cantidad':Items.cantidad,
-            'incremento':Items.incremento,
+    if 'incremento' in data:
+        try:
+            item.incremento=int(data['incremento'])
+        except ValueError:
+            pass
+    item.save()
+    return JsonResponse({
+        'cantidad':item.cantidad,
+        'incremento':item.incremento,
         })
 
 def testing(request):

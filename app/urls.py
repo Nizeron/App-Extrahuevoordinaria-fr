@@ -4,7 +4,7 @@ from . import views
 urlpatterns = [
     path('game/', views.juego_view, name='juego'),
     path('guardar/', views.guardar_progreso, name='guardar_progreso'),
-    path('game/',views.guardar_comprado),
+    path('guardar_compra/',views.guardar_comprado,name='guardar_comprado'),
     path('testing/',views.testing, name='test_lista_items'),
 ]
 #testing/ es para probar si partes especificas funcionan, el que quiera cambielo

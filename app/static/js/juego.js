@@ -1,10 +1,10 @@
 // juego.js — versión limpia SIN mejorasObj
+
 document.addEventListener('DOMContentLoaded', () => {
     // --- Estado inicial recibido desde Django ---
     const INIT = window.__INIT__ || {};
     let puntos = (typeof INIT.puntos === "number") ? INIT.puntos : 0;
     let puntosPorClick = (typeof INIT.click_power === "number") ? INIT.click_power : 1;
-    let cantidadItems = 0;
 
     const puntosSpan = document.getElementById('puntos');
     const clickerBtn = document.getElementById('clicker');
@@ -17,10 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (puntosSpan) puntosSpan.textContent = puntos;
     }
 
-    function actualizarItemStats(cantidad,incremento){
-        if (contadorItems) contadorItems.textContent=cantidad;
-        if (incrementoItems) incrementoItems.textContent= incremento
-    }
+
     function showToast(text) {
         const t = document.createElement('div');
         t.textContent = text;
@@ -60,15 +57,18 @@ document.addEventListener('DOMContentLoaded', () => {
         .catch(err => console.error("Error guardando progreso:", err));
     }
 
-    function guardarItemStats(){
-        fetch("/guardar_comprado/",{
+    function guardarItemStats(item, input1,input2){
+        console.log('inputs', input1, input2)
+        fetch("/guardar_compra/",{
             method:'POST',
             headers:{
-                "Content-Typer":"application/json"
+                "Content-Typer":"application/json",
+                "X-CSRFToken": getCookie("csrftoken")
             },
             body: JSON.stringify({
-                cantidad: comprado,
-                incremento:incremento
+                item: item, 
+                cantidad: input1,
+                incremento:input2
             })
         })
         .then(res=>res.json)
@@ -84,54 +84,69 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // manejo de tienda
-    tiendaItems.forEach(item => {
-
-        item.addEventListener('click', comprarItem);
-        item.addEventListener('keydown', ev => {
-            if (ev.key === 'Enter' || ev.key === ' ') {
-                ev.preventDefault();
-                comprarItem.call(item, ev);
-            }
-        });
+    function comprarItem(e) { 
+        const shopItem = e.currentTarget
 
         //llama las variables de costo, incremento y cantidad
-        function comprarItem() {
-            const costo = parseInt(this.getAttribute('data-cost'), 10);
-            const poder = parseInt(this.getAttribute('data-power'), 10);
-            let comprado = parseInt(this.getAttribute('data-contador'), 0);
-            let incremento = parseInt(this.getAttribute('data-incremento'),0)
-            if (isNaN(costo)) return;
+        const costo = parseInt(shopItem.getAttribute('data-cost') ?? 10);
+        const poder = parseInt(shopItem.getAttribute('data-power') ?? 10);
+        let nombre = shopItem.getAttribute('data-nombre') ;
+        let comprado = parseInt(shopItem.getAttribute('data-cantidad') ?? 0);
+        let incremento = parseInt(shopItem.getAttribute('data-incremento') ?? 0);
+        console.log('stats ii', isNaN(costo), comprado, incremento)
+        if (isNaN(costo)) return;
 
-            //compra fallida, shackey shake
-            if (puntos < costo) {
-                this.animate(
-                    [{ transform: 'translateX(-6px)' }, { transform: 'translateX(6px)' }, { transform: 'translateX(0)' },{ transform: 'translateX(-6px)' }],
-                    { duration: 250 }
-                );
-                showToast(`Necesitas ${costo} puntos`);
-                return;
-            }
-
-            // aplica compra
-            puntos -= costo;
-            puntosPorClick += (isNaN(poder) ? 0 : poder);
-            comprado += 1;
-            incremento+=incremento;
-            actualizarPuntos();
-            guardarItemStats(cantidad,incremento);
-            guardarProgreso();
-
-
-            // feedback visual
-            this.classList.add('bought');
-            setTimeout(() => this.classList.remove('bought'), 400);
-            //agregar anim del num de cantidad para cada compra
-
-
-            console.log(`Compraste ${this.id} → nuevo PPC: ${puntosPorClick}`);
-            showToast(`Mejora aplicada! +${poder}/click`);
+        //compra fallida, shackey shake
+        if (puntos < costo) {
+            shopItem.animate(
+                [{ transform: 'translateX(-6px)' }, { transform: 'translateX(6px)' }, { transform: 'translateX(0)' },{ transform: 'translateX(-6px)' }],
+                { duration: 250 }
+            );
+            showToast(`Necesitas ${costo} puntos`);
+            //return;
         }
+
+        // aplica compra
+        puntos -= costo;
+        puntosPorClick += (isNaN(poder) ? 0 : poder);
+        comprado += 1;
+        incremento+=incremento;
+
+        const cantElement=shopItem.querySelectorAll('.cantidad')
+        const incElement=shopItem.querySelectorAll('.incremento')
+  
+        cantElement[0].innerText=comprado
+        incElement[0].innerText=incremento
+                shopItem.setAttribute('data-cantidad', comprado);
+        shopItem.setAttribute('data-incremento', incremento);
+
+        actualizarPuntos();
+        guardarItemStats(nombre, comprado,incremento);
+        guardarProgreso();
+
+
+
+        // feedback visual
+        shopItem.classList.add('bought');
+        setTimeout(() => shopItem.classList.remove('bought'), 400);
+        //agregar anim del num de cantidad para cada compra
+
+
+        console.log(`Compraste ${shopItem.id} → nuevo PPC: ${puntosPorClick}`);
+        showToast(`Mejora aplicada! +${poder}/click`);
+    }
+        // manejo de tienda
+        tiendaItems.forEach(item => {
+            item.addEventListener('click', comprarItem);
+            item.addEventListener('keydown', ev => {
+                if (ev.key === 'Enter' || ev.key === ' ') {
+                    ev.preventDefault();
+                    comprarItem.call(item, ev);
+                }
+            });
+
+        
+ 
     });
 
     // inicializar UI

@@ -102,8 +102,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 [{ transform: 'translateX(-6px)' }, { transform: 'translateX(6px)' }, { transform: 'translateX(0)' },{ transform: 'translateX(-6px)' }],
                 { duration: 250 }
             );
-            showToast(`Necesitas ${costo} puntos`);
-            //return;
+            showToast(`Necesitas ${costo-puntos} puntos`);
+            return;
         }
 
         // aplica compra

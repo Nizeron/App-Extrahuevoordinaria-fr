@@ -1,0 +1,15 @@
+/* === PARTICULAS +1 === */
+.particle {
+    position: absolute;
+    font-family: "Press Start 2P", monospace;
+    color: #00ff66;
+    font-size: 12px;
+    pointer-events: none;
+    animation: rise 0.8s ease-out forwards;
+    text-shadow: 0 0 6px #00ff66;
+}
+
+@keyframes rise {
+    from { transform: translateY(0); opacity: 1; }
+    to { transform: translateY(-40px); opacity: 0; }
+}

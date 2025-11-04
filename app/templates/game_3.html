@@ -17,7 +17,27 @@
     <link rel="stylesheet" href="{% static 'css/estilo.css' %}">
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
 
-
+    <!-- ✅ CSS del overlay -->
+    <style>
+    #level-overlay {
+        position: fixed;
+        inset: 0;
+        background: black;
+        display: none;
+        color: white;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        z-index: 999999;
+        font-family: "Press Start 2P";
+        padding: 40px;
+        font-size: 18px;
+    }
+    #overlay-text {
+        max-width: 800px;
+        line-height: 1.4;
+    }
+    </style>
 </head>
 
 <body>
@@ -39,7 +59,7 @@
         <h2>Tienda</h2>
 
         <div class="shop-item" data-cost="20" data-power="1" id="carbono">
-            <img src="{% static 'images/ciudad bus.png' %}">
+            <img src="{% static 'images/personal.png' %}">
             <span>Captura de Carbono<br><span class="cost">Costo: 20</span></span>
         </div>
 
@@ -69,7 +89,6 @@
         </div>
     </div>
 
-    <!-- ✅ Información acumulada -->
     <div class="info-box">
         <h3>Captura de Carbono</h3>
         <p>Los filtros atrapan CO₂ de la atmósfera y ayudan a limpiar el aire.</p>
@@ -79,6 +98,12 @@
 
         <h3>Transporte Eléctrico</h3>
         <p>Autos y buses eléctricos reducen contaminación del aire y ruido en la ciudad.</p>
+    </div>
+
+    <!-- ✅ Overlay funcional -->
+    <div id="level-overlay">
+        <p id="overlay-text"></p>
+        <audio id="overlay-sound" src="{% static 'sounds/construccion.m4a' %}"></audio>
     </div>
 
 </body>

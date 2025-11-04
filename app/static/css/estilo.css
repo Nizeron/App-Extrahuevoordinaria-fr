@@ -6,7 +6,6 @@ body {
     background-attachment: fixed;
     margin: 0;
 
-    /* Layout del juego */
     display: flex !important;
     flex-direction: row !important;
     justify-content: flex-start !important;
@@ -17,7 +16,7 @@ body {
     font-family: "Press Start 2P", monospace;
 }
 
-/* ✅ Estilo de paneles */
+/* ✅ Paneles */
 .game-container, .shop-container, .info-box {
     background: rgba(0,0,0,0.6);
     padding: 18px;
@@ -25,48 +24,34 @@ body {
     box-shadow: 0 0 10px rgba(0,0,0,0.6);
 }
 
-/* Panel izquierdo (juego) */
+/* Panel izquierdo */
 .game-container {
     width: 280px;
-    background: rgba(0,0,0,0.6);
-    padding: 18px;
-    border-radius: 12px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.6);
-
-    text-align: center;
     display: flex;
     flex-direction: column;
-    align-items: center;    /* ✅ centra el botón */
+    align-items: center;
 }
 
-
-/* Panel central (tienda) */
+/* Panel tienda */
 .shop-container {
     width: 260px;
     max-height: 80vh;
     overflow-y: hidden;
 }
 
-/* Panel derecho (información) */
-/* Columna derecha (info) */
+/* Panel información */
 .info-box {
     width: 220px;
     padding: 14px;
     color: white;
     font-size: 10px;
-    background: rgba(0,0,0,0.6);
-    border-radius: 12px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.6);
-
-    /* ✅ Esto evita que se estire hasta abajo */
-    height: auto;        
-    max-height: 100vh;     /* por si el texto es largo */
-    overflow-y: auto;     /* solo si se pasa del límite */
+    height: auto;
+    max-height: 100vh;
+    overflow-y: auto;
 }
-
 .info-box.hidden { display: none; }
 
-/* ✅ Botón corregido (ya no gigante) */
+/* ✅ Botón clic */
 .pixel-button {
     background-color: #00a86b;
     color: white;
@@ -80,8 +65,9 @@ body {
     box-shadow: 0 0 0 3px #00694d, 0 5px 0 3px #004d3a;
     transition: all 0.1s ease;
 
+    /* ✅ Estilo correcto para imagen arriba y texto abajo */
     display: flex;
-    flex-direction: column;
+    flex-direction: column;       /* ← ESTO hace que la imagen esté arriba */
     justify-content: center;
     align-items: center;
 }
@@ -91,8 +77,6 @@ body {
     transform: translateY(3px);
     box-shadow: 0 0 0 3px #00694d, 0 2px 0 3px #004d3a;
 }
-
-/* Botella más pequeña */
 .recycle-icon {
     width: 45px;
     height: 45px;
@@ -100,7 +84,7 @@ body {
     image-rendering: pixelated;
 }
 
-/* ✅ Tienda */
+/* Tienda */
 .shop-item {
     display: flex;
     align-items: center;
@@ -117,25 +101,39 @@ body {
 .shop-item span { font-size: 10px; }
 .cost { color: #00ff66; font-size: 8px; }
 
-/* Puntos */
 #puntos { font-size: 18px; color: #00ff66; }
 
-/* Quita cualquier fondo previo del body para no pelear estilos */
+/* ✅ Fondo por imagen detrás de todo */
 body { background: none !important; }
 
-/* Imagen de fondo fija detrás de todo */
 .bg-fullscreen {
   position: fixed;
-  inset: 0;              /* top:0; right:0; bottom:0; left:0 */
+  inset: 0;
   width: 100vw;
   height: 100vh;
-  object-fit: fill;      /* ✅ se estira sin dejar bordes (sin recorte) */
-  z-index: -1;           /* detrás del juego */
-  pointer-events: none;  /* no bloquea clics */
+  object-fit: fill;
+  z-index: -1;
+  pointer-events: none;
 }
 
-/* Oculta scroll global de la página */
+/* ✅ Quita scroll global */
 html, body {
     height: 100%;
-    overflow-y: hidden;  /* ✅ evita barra fea a la derecha */
+    overflow-y: hidden;
+}
+
+/* ✅ ✅ OVERLAY NEGRO AL PASAR DE NIVEL */
+#level-overlay {
+    position: fixed;
+    inset: 0;
+    background: black;
+    color: white;
+    font-family: "Press Start 2P";
+    font-size: 20px;
+    display: none; /* oculto hasta que se active */
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 40px;
+    z-index: 999999;
 }

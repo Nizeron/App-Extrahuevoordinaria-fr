@@ -17,16 +17,15 @@
     <script src="{% static 'js/juego.js' %}" defer></script>
     <link rel="stylesheet" href="{% static 'css/estilo.css' %}">
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
-
-    
-
 </head>
 
 <body>
 
+    <!-- ✅ Fondo a pantalla completa -->
     <img class="bg-fullscreen"
          src="{% static 'images/ciudad basura.png' %}"
          alt="" aria-hidden="true">
+
     <!-- IZQUIERDA: CLICKER -->
     <div class="game-container">
         <h1>♻️ Reciclaje</h1>
@@ -77,6 +76,12 @@
     <div id="info-box" class="info-box hidden">
         <h3 id="info-title"></h3>
         <p id="info-text"></p>
+    </div>
+
+    <!-- ✅ ✅ PANTALLA NEGRA (OCULTA HASTA USARLA) -->
+    <div id="level-overlay">
+        <p id="overlay-text"></p>
+        <audio id="overlay-sound" src="{% static 'sounds/construccion.m4a' %}"></audio>
     </div>
 
 </body>

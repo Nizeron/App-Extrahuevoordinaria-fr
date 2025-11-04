@@ -1,134 +1,199 @@
-// juego.js — control de tienda + avance de niveles
+// juego.js — tienda, avance de niveles, overlay + audio y toast por compra
 document.addEventListener('DOMContentLoaded', () => {
-    const INIT = window.__INIT__ || {};
-    let puntos = Number(INIT.puntos) || 0;
-    let puntosPorClick = Number(INIT.click_power) || 1;
+  const INIT = window.__INIT__ || {};
+  let puntos = Number(INIT.puntos) || 0;
+  let puntosPorClick = Number(INIT.click_power) || 1;
 
-    const puntosSpan = document.getElementById('puntos');
-    const clickerBtn = document.getElementById('clicker');
-    const tiendaItems = document.querySelectorAll('.shop-item');
+  const puntosSpan  = document.getElementById('puntos');
+  const clickerBtn  = document.getElementById('clicker');
+  const tiendaItems = document.querySelectorAll('.shop-item');
 
-    // ✅ TOAST RESTAURADO
-    function showToast(text) {
-        const t = document.createElement('div');
-        t.textContent = text;
-        Object.assign(t.style, {
-            position: 'fixed',
-            right: '20px',
-            bottom: '20px',
-            background: 'rgba(0,0,0,0.85)',
-            color: 'white',
-            padding: '10px 14px',
-            borderRadius: '6px',
-            fontFamily: 'monospace',
-            fontSize: '13px',
-            zIndex: 99999,
-            transition: 'opacity 0.6s'
-        });
-        document.body.appendChild(t);
-        setTimeout(() => t.style.opacity = '0', 1200);
-        setTimeout(() => t.remove(), 1800);
+  // --- Mensajes (para panel lateral) ---
+  const mensajes = {
+    carbono: { titulo: "Captura de Carbono",   texto: "Los filtros de CO₂ eliminan gases de efecto invernadero y limpian el aire." },
+    solar:   { titulo: "Energía Solar",        texto: "Produce energía sin contaminar y reduce el uso de combustibles fósiles." },
+    buses:   { titulo: "Transporte Eléctrico", texto: "Reduce el smog, el ruido y mejora la calidad del aire." },
+    techos:  { titulo: "Techos Verdes",        texto: "Absorben CO₂, mejoran el aire y enfrían la ciudad." },
+    agua:    { titulo: "Ahorro de Agua",       texto: "Evita desperdicio y reduce gasto energético en tratamiento." },
+    luces:   { titulo: "Luces LED",            texto: "Usan menos energía, duran más y reducen emisiones." }
+  };
+
+  // --- Mensajes largos (overlay negro) ---
+  const mensajesLargos = {
+    carbono: "Los sistemas de captura absorben CO₂ del aire. Esto reduce gases de efecto invernadero y ayuda a enfriar el planeta.",
+    solar:   "La energía solar genera electricidad limpia sin emisiones. Reduce combustibles fósiles y mejora la calidad del aire.",
+    buses:   "Los buses eléctricos no producen gases tóxicos ni ruido. Reducen el smog y mejoran la salud urbana.",
+    techos:  "La vegetación en techos purifica el aire, atrapa CO₂, baja la temperatura y absorbe agua lluvia.",
+    agua:    "El uso eficiente de agua reduce el gasto energético en tratamiento y evita desperdicio.",
+    luces:   "Las luces LED consumen mucha menos energía, duran más y evitan toneladas de CO₂ al año."
+  };
+
+  // --- UI helpers ---
+  function actualizarPuntos() {
+    if (puntosSpan) puntosSpan.textContent = puntos;
+  }
+
+  function showToast(text) {
+    const t = document.createElement('div');
+    t.textContent = text;
+    Object.assign(t.style, {
+      position: 'fixed',
+      right: '20px',
+      bottom: '20px',
+      background: 'rgba(0,0,0,0.85)',
+      color: 'white',
+      padding: '10px 14px',
+      borderRadius: '6px',
+      fontFamily: 'monospace',
+      fontSize: '13px',
+      zIndex: 999999,
+      transition: 'opacity 0.6s'
+    });
+    document.body.appendChild(t);
+    setTimeout(() => t.style.opacity = '0', 1200);
+    setTimeout(() => t.remove(), 1800);
+  }
+
+  function getCookie(name) {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return parts.pop().split(';').shift();
+    return null;
+  }
+
+  // --- Overlay: mostrar/ocultar ---
+  function mostrarPantallaNegra(mejora) {
+    const overlay = document.getElementById('level-overlay');
+    const texto   = document.getElementById('overlay-text');
+    const audio   = document.getElementById('overlay-sound');
+
+    if (!overlay || !texto) {
+      console.warn('[overlay] Falta el bloque #level-overlay en este template.');
+      return null;
     }
 
-    // Mensajes (IDs deben coincidir con el HTML)
-    const mensajes = {
-        carbono: { titulo: "Captura de Carbono", texto: "Los filtros de captura de CO₂ ayudan a limpiar el aire y reducen gases tóxicos en la ciudad." },
-        solar:   { titulo: "Energía Solar",       texto: "La luz solar genera electricidad sin contaminar y reduce combustibles fósiles." },
-        buses:   { titulo: "Transporte Eléctrico",texto: "Autos y buses eléctricos reducen contaminación del aire y ruido en la ciudad." },
-        techos:  { titulo: "Techos Verdes",       texto: "Las plantas en los techos absorben CO₂, mejoran la calidad del aire y bajan la temperatura urbana." },
-        agua:    { titulo: "Ahorro de Agua",      texto: "Sistemas eficientes evitan desperdicio de agua y reducen el consumo energético." },
-        luces:   { titulo: "Luces LED",           texto: "Consumen menos energía, duran más y reducen toneladas de CO₂ emitidas a la atmósfera." }
-    };
+    texto.textContent = mensajesLargos[mejora] || "Mejora aplicada a la ciudad...";
+    overlay.style.display = 'flex';      // visible
+    overlay.style.justifyContent = 'center';
+    overlay.style.alignItems = 'center';
+    overlay.style.textAlign = 'center';
 
-    function actualizarPuntos() {
-        if (puntosSpan) puntosSpan.textContent = puntos;
+    if (audio) {
+      try {
+        audio.currentTime = 0;
+        audio.volume = 0.85;
+        audio.play().catch(() => {/* ignore autoplay errors */});
+      } catch (_) {}
     }
+    return overlay;
+  }
 
-    function getCookie(name) {
-        const value = `; ${document.cookie}`;
-        const parts = value.split(`; ${name}=`);
-        if (parts.length === 2) return parts.pop().split(';').shift();
-        return null;
-    }
+  function ocultarPantallaNegra() {
+    const overlay = document.getElementById('level-overlay');
+    if (overlay) overlay.style.display = 'none';
+  }
 
-    function guardarProgreso(mejora = null) {
-        fetch("/game/guardar/", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "X-CSRFToken": getCookie("csrftoken")
-            },
-            body: JSON.stringify({
-                puntos: puntos,
-                click_power: puntosPorClick,
-                mejora: mejora
-            })
-        })
-        .then(res => res.json())
-        .then(data => {
-            console.log("Guardado:", data);
-            if (data.template_actual) {
-                const destino = `/${data.template_actual}`;
-                const current = window.location.pathname.replace(/^\//, '');
-                if (current !== data.template_actual) {
-                    window.location.href = destino;
-                }
-            }
-        })
-        .catch(err => console.error("Error guardando:", err));
-    }
+  // --- Guardar estado en backend ---
+  async function guardarProgreso(mejora = null) {
+    const res = await fetch("/game/guardar/", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-CSRFToken": getCookie("csrftoken")
+      },
+      body: JSON.stringify({
+        puntos: puntos,
+        click_power: puntosPorClick,
+        mejora: mejora
+      })
+    });
+    const data = await res.json();
+    console.log("[guardar] respuesta:", data);
+    return data;
+  }
 
-    // Click principal
-    if (clickerBtn) {
-        clickerBtn.addEventListener('click', () => {
-            puntos += puntosPorClick;
-            actualizarPuntos();
-            guardarProgreso(); // sin mejora
-        });
-    }
+  // --- Click principal ---
+  if (clickerBtn) {
+    clickerBtn.addEventListener('click', async () => {
+      puntos += puntosPorClick;
+      actualizarPuntos();
+      try {
+        await guardarProgreso(null); // solo guardar puntos/ppc
+      } catch (e) {
+        console.error("[guardar] error en click:", e);
+      }
+    });
+  }
 
-    // Tienda
-    tiendaItems.forEach(item => {
-        item.addEventListener('click', comprarItem);
-        item.addEventListener('keydown', ev => {
-            if (ev.key === 'Enter' || ev.key === ' ') {
-                ev.preventDefault();
-                comprarItem.call(item, ev);
-            }
-        });
+  // --- Tienda ---
+  tiendaItems.forEach(item => {
+    // accesibilidad
+    if (!item.hasAttribute('role')) item.setAttribute('role', 'button');
+    if (!item.hasAttribute('tabindex')) item.setAttribute('tabindex', '0');
 
-        function comprarItem() {
-            const costo = parseInt(this.getAttribute('data-cost'), 10);
-            const poder = parseInt(this.getAttribute('data-power'), 10);
-
-            // Si no alcanza, muestra TOAST (igual que versión antigua)
-            if (isNaN(costo) || puntos < costo) {
-                showToast(`Necesitas ${costo} puntos`);
-                return;
-            }
-
-            puntos -= costo;
-            puntosPorClick += (isNaN(poder) ? 0 : poder);
-            actualizarPuntos();
-
-            // Muestra mensaje en el panel lateral
-            const infoBox = document.getElementById('info-box');
-            const infoTitle = document.getElementById('info-title');
-            const infoText = document.getElementById('info-text');
-            const msg = mensajes[this.id];
-            if (infoBox && infoTitle && infoText && msg) {
-                infoTitle.textContent = msg.titulo;
-                infoText.textContent  = msg.texto;
-                infoBox.classList.remove('hidden');
-            }
-
-            // ✅ TOAST DE COMPRA RESTAURADO
-            showToast(`Compraste ${msg.titulo} +${poder}/click`);
-
-            // Enviar a backend
-            guardarProgreso(this.id);
-        }
+    item.addEventListener('click', comprarItem);
+    item.addEventListener('keydown', ev => {
+      if (ev.key === 'Enter' || ev.key === ' ') {
+        ev.preventDefault();
+        comprarItem.call(item, ev);
+      }
     });
 
-    actualizarPuntos();
+    async function comprarItem() {
+      const id = this.id; // "carbono", "solar", etc
+      const costo = parseInt(this.getAttribute('data-cost'), 10);
+      const poder = parseInt(this.getAttribute('data-power'), 10);
+
+      if (isNaN(costo) || puntos < costo) {
+        showToast(`Necesitas ${costo} puntos`);
+        return;
+      }
+
+      // aplicar compra
+      puntos -= costo;
+      puntosPorClick += (isNaN(poder) ? 0 : poder);
+      actualizarPuntos();
+
+      // panel lateral info
+      const msg = mensajes[id];
+      const box = document.getElementById('info-box');
+      if (box && msg) {
+        const title = document.getElementById('info-title');
+        const text  = document.getElementById('info-text');
+        if (title) title.textContent = msg.titulo;
+        if (text)  text.textContent  = msg.texto;
+        box.classList.remove('hidden');
+      }
+
+      // ✅ TOAST de compra SIEMPRE (tu funcionalidad antigua)
+      showToast(`Compraste ${msg ? msg.titulo : id}  +${poder}/click`);
+
+      // guardar y comprobar si hay cambio de template
+      try {
+        const data = await guardarProgreso(id);
+
+        // Si el backend decide avanzar de nivel, aparece overlay negro y luego redirige
+        const currentTpl = window.location.pathname.replace(/^\//, '');
+        if (data.template_actual && data.template_actual !== currentTpl) {
+          console.log("[nivel] cambio detectado:", currentTpl, "→", data.template_actual);
+
+          // Mostrar overlay 10s antes de avanzar
+          const overlay = mostrarPantallaNegra(id);
+          setTimeout(() => {
+            ocultarPantallaNegra();
+            window.location.href = `/${data.template_actual}`;
+          }, 10000);
+        } else {
+          console.log("[nivel] sin cambio de template. (Puede que no sea la mejora esperada en el orden.)");
+        }
+      } catch (e) {
+        console.error("[guardar] error en compra:", e);
+      }
+    }
+  });
+
+  // Inicializar UI
+  actualizarPuntos();
+  console.log("[init] puntos:", puntos, "ppc:", puntosPorClick, "path:", window.location.pathname);
 });
+

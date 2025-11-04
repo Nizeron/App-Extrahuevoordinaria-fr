@@ -1,6 +1,5 @@
 // juego.js — versión limpia SIN mejorasObj
 
-document.addEventListener('DOMContentLoaded', () => {
     // --- Estado inicial recibido desde Django ---
     const INIT = window.__INIT__ || {};
     let puntos = (typeof INIT.puntos === "number") ? INIT.puntos : 0;
@@ -9,14 +8,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const puntosSpan = document.getElementById('puntos');
     const clickerBtn = document.getElementById('clicker');
     const tiendaItems = document.querySelectorAll('.shop-item');
-    const contadorItems = document.querySelectorAll('.cantidad');
-    const incrementoItems = document.querySelectorAll('.incremento')
     //llaman clases e ID de /game para usar
     
     function actualizarPuntos() {
         if (puntosSpan) puntosSpan.textContent = puntos;
     }
-
 
     function showToast(text) {
         const t = document.createElement('div');
@@ -30,7 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
         setTimeout(() => t.style.opacity = '0', 1600);
         setTimeout(() => t.remove(), 2000);
     }
-    //cockies
+    //coockies
     function getCookie(name) {
         const value = `; ${document.cookie}`;
         const parts = value.split(`; ${name}=`);
@@ -57,8 +53,8 @@ document.addEventListener('DOMContentLoaded', () => {
         .catch(err => console.error("Error guardando progreso:", err));
     }
 
-    function guardarItemStats(item, input1,input2){
-        console.log('inputs', input1, input2)
+    function guardarItemStats(item, comprado,bono){
+        console.log('guardando compra', comprado, bono)
         fetch("/guardar_compra/",{
             method:'POST',
             headers:{
@@ -67,8 +63,8 @@ document.addEventListener('DOMContentLoaded', () => {
             },
             body: JSON.stringify({
                 item: item, 
-                cantidad: input1,
-                incremento:input2
+                cantidad: comprado,
+                bono:bono,
             })
         })
         .then(res=>res.json)
@@ -92,8 +88,9 @@ document.addEventListener('DOMContentLoaded', () => {
         const poder = parseInt(shopItem.getAttribute('data-power') ?? 10);
         let nombre = shopItem.getAttribute('data-nombre') ;
         let comprado = parseInt(shopItem.getAttribute('data-cantidad') ?? 0);
-        let incremento = parseInt(shopItem.getAttribute('data-incremento') ?? 0);
-        console.log('stats ii', isNaN(costo), comprado, incremento)
+        const incremento = parseInt(shopItem.getAttribute('data-incremento'));
+        let bono = parseInt(shopItem.getAttribute('data-bono'));
+        console.log('logica bono', incremento, comprado, bono)
         if (isNaN(costo)) return;
 
         //compra fallida, shackey shake
@@ -102,26 +99,25 @@ document.addEventListener('DOMContentLoaded', () => {
                 [{ transform: 'translateX(-6px)' }, { transform: 'translateX(6px)' }, { transform: 'translateX(0)' },{ transform: 'translateX(-6px)' }],
                 { duration: 250 }
             );
-            showToast(`Necesitas ${costo} puntos`);
-            //return;
+            showToast(`Necesitas ${costo-puntos} puntos`);
+            return;
         }
 
         // aplica compra
         puntos -= costo;
         puntosPorClick += (isNaN(poder) ? 0 : poder);
         comprado += 1;
-        incremento+=incremento;
+        bono+=incremento;
 
         const cantElement=shopItem.querySelectorAll('.cantidad')
-        const incElement=shopItem.querySelectorAll('.incremento')
+        const bonoElement=shopItem.querySelectorAll('.incremento')
   
         cantElement[0].innerText=comprado
-        incElement[0].innerText=incremento
-                shopItem.setAttribute('data-cantidad', comprado);
-        shopItem.setAttribute('data-incremento', incremento);
-
+        bonoElement[0].innerText=bono
+        shopItem.setAttribute('data-cantidad', comprado);
+        shopItem.setAttribute('data-bono', bono);
         actualizarPuntos();
-        guardarItemStats(nombre, comprado,incremento);
+        guardarItemStats(nombre, comprado,bono);
         guardarProgreso();
 
 
@@ -145,12 +141,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             });
 
-        
+       
+
  
     });
-
+    
     // inicializar UI
     actualizarPuntos();
     console.log("juego.js cargado");
-
-});
+//export const infoItem=document.querySelectorAll('.shop-item');

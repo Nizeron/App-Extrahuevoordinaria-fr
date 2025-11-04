@@ -71,18 +71,23 @@ def guardar_comprado(request):
             item.cantidad=int(data['cantidad'])
         except ValueError:
             pass
-    if 'bono' in data:
-        try:
-            item.bono=int(data['bono'])
-        except ValueError:
-            pass
     item.save()
     return JsonResponse({
         'cantidad':item.cantidad,
-        'bono':item.bono,
         })
+
+@login_required
+def guardar_bonos(request):
+    if request.method =='POST':
+        print('bono:',request.body)
+        data=json.loads(request.body)
+        item=Items.objects.get(name=data['bonos'])
+        if 'bonos' in data:
+            item.bono=int(data['bono'])
+    item.save()
+    return
+
 
 def testing(request):
     items=Items.objects.all()
     return render(request,'testing.html',{'items':items})
-

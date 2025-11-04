@@ -14,7 +14,7 @@ class Items(models.Model):
     descripcion=models.TextField(max_length=40,null=True,blank=True)
     costo=models.IntegerField(default=0)
     cantidad=models.IntegerField(default=0)
-    incremento=models.IntegerField(default=1)
+    incremento=models.DecimalField(default=0.1, max_digits=5, decimal_places=2)
     bono=models.DecimalField(default=0.1,max_digits=5, decimal_places=2)
     relUsuario=models.ForeignKey(ProgresoJugador, on_delete=models.CASCADE, null=True,blank=True)
     def __str__(self):

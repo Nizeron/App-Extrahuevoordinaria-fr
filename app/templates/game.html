@@ -1,9 +1,9 @@
 {% extends "items_layout.html" %}
 {% load static %}
 {% block titulo %} 
-<head>
-    <title>juego</title>
-</head> 
+    <head>
+        <title>Juego</title>
+    </head>
 {% endblock titulo %}
 
 <body>
@@ -23,14 +23,13 @@
         </div>
     </div>
     {% endblock boton %}
-    gif
     {% block items %}
         <div class="shop-container">
         <h2>Tienda</h2>
         
         {% for item in items %}
         
-                    <div class="shop-item" data-cost={{item.costo}} data-power={{item.incremento}} data-role='button'
+                    <div type='module' class="shop-item" data-cost={{item.costo}} data-power={{item.incremento}} data-role='button'
                     data-tabidex=0 data-cantidad={{item.cantidad}} data-incremento={{item.incremento}} 
                     data-nombre="{{item.nombre}}" data-bono={{item.bono}}>
                          <!--agregar variable de cantidad y resolver id-->
@@ -53,6 +52,8 @@
         {% endfor %}
     </div>
     {% endblock items %}
+    {% block ventanal %}
 
+    {% endblock ventanal %}
 </body>
 </html>

@@ -1,6 +1,6 @@
 // juego.js — versión limpia SIN mejorasObj
 
-    // --- Estado inicial recibido desde Django ---
+import { guardarItemStats, guardarProgreso } from "./saves";
     const INIT = window.__INIT__ || {};
     let puntos = (typeof INIT.puntos === "number") ? INIT.puntos : 0;
     let puntosPorClick = (typeof INIT.click_power === "number") ? INIT.click_power : 1;
@@ -53,8 +53,8 @@
         .catch(err => console.error("Error guardando progreso:", err));
     }
 
-    function guardarItemStats(item, comprado,bono){
-        console.log('guardando compra', comprado, bono)
+    function guardarItemStats(item, comprado){
+        console.log('guardando compra', comprado)
         fetch("/guardar_compra/",{
             method:'POST',
             headers:{
@@ -64,7 +64,6 @@
             body: JSON.stringify({
                 item: item, 
                 cantidad: comprado,
-                bono:bono,
             })
         })
         .then(res=>res.json)
@@ -140,8 +139,6 @@
                     comprarItem.call(item, ev);
                 }
             });
-
-       
 
  
     });

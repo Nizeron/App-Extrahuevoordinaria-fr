@@ -6,5 +6,7 @@ urlpatterns = [
     path('guardar/', views.guardar_progreso, name='guardar_progreso'),
     path('guardar_compra/',views.guardar_comprado,name='guardar_comprado'),
     path('testing/',views.testing, name='test_lista_items'),
+    path('/guardar_bonos',views.guardar_bonos,name='guardar_bonos'),
+
 ]
 #testing/ es para probar si partes especificas funcionan, el que quiera cambielo

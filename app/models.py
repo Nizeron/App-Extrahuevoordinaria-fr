@@ -15,6 +15,7 @@ class Items(models.Model):
     costo=models.IntegerField(default=0)
     cantidad=models.IntegerField(default=0)
     incremento=models.IntegerField(default=1)
+    bono=models.DecimalField(default=0.1,max_digits=5, decimal_places=2)
     relUsuario=models.ForeignKey(ProgresoJugador, on_delete=models.CASCADE, null=True,blank=True)
     def __str__(self):
         return f"{self.nombre} | {self.cantidad} | {self.incremento}"

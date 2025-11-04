@@ -71,15 +71,15 @@ def guardar_comprado(request):
             item.cantidad=int(data['cantidad'])
         except ValueError:
             pass
-    if 'incremento' in data:
+    if 'bono' in data:
         try:
-            item.incremento=int(data['incremento'])
+            item.bono=int(data['bono'])
         except ValueError:
             pass
     item.save()
     return JsonResponse({
         'cantidad':item.cantidad,
-        'incremento':item.incremento,
+        'bono':item.bono,
         })
 
 def testing(request):

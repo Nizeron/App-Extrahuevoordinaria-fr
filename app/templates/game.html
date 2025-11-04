@@ -30,8 +30,9 @@
         
         {% for item in items %}
         
-                    <div class="shop-item" data-cost={{item.costo}} data-power={{item.incremento}} data-role='button' data-tabidex=0
-                        data-cantidad={{item.cantidad}} data-incremento={{item.incremento}} data-nombre="{{item.nombre}}">
+                    <div class="shop-item" data-cost={{item.costo}} data-power={{item.incremento}} data-role='button'
+                    data-tabidex=0 data-cantidad={{item.cantidad}} data-incremento={{item.incremento}} 
+                    data-nombre="{{item.nombre}}" data-bono={{item.bono}}>
                          <!--agregar variable de cantidad y resolver id-->
                         <img src="{% static 'images/personal.png' %}">
                         <span> 
@@ -42,7 +43,7 @@
                             {{item.cantidad}}
                         </div>
                         <div class='incremento' >
-                            {{item.incremento}}
+                            {{item.bono}}
                             <!--muestra incremento-->
                         </div>
                         <div class='descripcion' align>

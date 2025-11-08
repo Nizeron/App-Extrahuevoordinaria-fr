@@ -7,11 +7,23 @@
     <title>Home</title>
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
+<script>
+document.querySelectorAll(".opciones a").forEach(link => {
+    link.addEventListener("click", e => {
+        e.preventDefault();
+        document.body.classList.add("fade-out");
+        setTimeout(() => {
+            window.location.href = link.href;
+        }, 450); // tiempo del fade
+    });
+});
+</script>
+
 <body>
     <div class="overlay"></div>
 
     <div class="content">
-        <h1>*Nombre del juego*</h1>
+        <h1>*CLIMATE CLICKER*</h1>
 
         <div class="opciones">
             <ul>

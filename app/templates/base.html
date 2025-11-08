@@ -21,10 +21,24 @@ document.addEventListener("DOMContentLoaded", () => {
     const music = document.getElementById("bg-music");
     const hover = document.getElementById("hover-sfx");
 
-    /* Música habilitada al primer click (regla del navegador) */
-    function enableMusic() {
-        music.volume = 0.45;
+    /* 1) Restaurar tiempo */
+    const savedTime = localStorage.getItem("music_time");
+    if (savedTime) {
+        music.currentTime = Number(savedTime);
+    }
+
+    /* 2) Si ya estaba sonando antes, no reiniciamos */
+    if (localStorage.getItem("music_playing") === "true") {
+        music.volume = 0; // fade-in suave
         music.play().catch(()=>{});
+        fadeIn(music);
+    }
+
+    /* 3) Primera interacción → iniciar música */
+    function enableMusic() {
+        music.volume = 0;
+        music.play().catch(()=>{});
+        fadeIn(music);
         localStorage.setItem("music_playing", "true");
         window.removeEventListener("click", enableMusic);
         window.removeEventListener("keydown", enableMusic);
@@ -32,22 +46,37 @@ document.addEventListener("DOMContentLoaded", () => {
     window.addEventListener("click", enableMusic);
     window.addEventListener("keydown", enableMusic);
 
-    /* Si el usuario ya había activado la música antes → continuar */
-    if (localStorage.getItem("music_playing") === "true") {
-        music.volume = 0.45;
-        music.play().catch(()=>{});
-    }
+    /* 4) Guardar tiempo justo antes de salir de la página */
+    window.addEventListener("beforeunload", () => {
+        localStorage.setItem("music_time", music.currentTime);
+    });
 
-    /* Sonido en botones */
+    /* 5) Sonido hover botones */
     document.querySelectorAll(".btn-sound").forEach(btn => {
         btn.addEventListener("mouseenter", () => {
             hover.currentTime = 0;
-            hover.volume = 0.9;
+            hover.volume = 0.85;
             hover.play();
         });
     });
+
 });
+
+/* Fade-in suave para evitar corte o salto */
+function fadeIn(audio) {
+    let vol = 0;
+    const interval = setInterval(() => {
+        vol += 0.03;
+        if (vol >= 0.45) { // volumen final
+            audio.volume = 0.30;
+            clearInterval(interval);
+        } else {
+            audio.volume = vol;
+        }
+    }, 50);
+}
 </script>
+
 
 </body>
 </html>

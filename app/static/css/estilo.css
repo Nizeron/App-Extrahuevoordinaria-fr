@@ -52,88 +52,295 @@ body {
 .info-box.hidden { display: none; }
 
 /* ✅ Botón clic */
+/* ================= BOTÓN CLICKER: EPIC PIXEL ================= */
 .pixel-button {
-    background-color: #00a86b;
-    color: white;
-    border: 3px solid #004d3a;
-    cursor: pointer;
-
-    width: 130px;
-    height: 130px;
-    border-radius: 6px;
-
-    box-shadow: 0 0 0 3px #00694d, 0 5px 0 3px #004d3a;
-    transition: all 0.1s ease;
-
-    /* ✅ Estilo correcto para imagen arriba y texto abajo */
+    /* tamaño / layout */
+    width: 140px;
+    height: 140px;
     display: flex;
-    flex-direction: column;       /* ← ESTO hace que la imagen esté arriba */
+    flex-direction: column;   /* imagen arriba, texto abajo */
     justify-content: center;
     align-items: center;
+    gap: 8px;
+    padding: 6px;
+    box-sizing: border-box;
+    position: relative;       /* necesario para ::after (glint) */
+
+    /* colores / borde */
+    background: linear-gradient(180deg, #00d088 0%, #00a86b 65%);
+    color: #ffffff;
+    border: 4px solid #003e2c;      /* borde fuerte estilo pixel */
+    border-radius: 6px;
+
+    /* sombras tipo "pixel-stacked" para efecto 3D */
+    box-shadow:
+        0 0 0 4px #00694d,    /* contorno */
+        8px 8px 0 0 #003e2c,  /* escalón 1 */
+        14px 14px 0 0 #001f16,/* escalón 2 */
+        inset 0 -6px 0 0 rgba(255,255,255,0.06); /* brillo interior */
+
+    cursor: pointer;
+    user-select: none;
+    transition: transform 0.08s linear, box-shadow 0.08s linear, filter 0.12s linear;
+    will-change: transform, box-shadow;
+    font-family: "Press Start 2P", monospace;
+    font-size: 10px;
+    text-align: center;
+    text-shadow: 1px 1px 0 #003e2c;
+    outline: none;
 }
 
-.pixel-button:hover { background-color: #00c97b; }
+/* micro-animación de brillo (glint) */
+@keyframes pixel-glint {
+    0%   { opacity: 0; transform: translateX(-40%) skewX(-12deg); }
+    50%  { opacity: 0.65; transform: translateX(30%)  skewX(-12deg); }
+    100% { opacity: 0; transform: translateX(120%) skewX(-12deg); }
+}
+.pixel-button::after {
+    content: "";
+    position: absolute;
+    width: 70%;
+    height: 16%;
+    top: 14%;
+    left: 15%;
+    background: linear-gradient(90deg, rgba(255,255,255,0.0), rgba(255,255,255,0.16), rgba(255,255,255,0.0));
+    transform: skewX(-12deg);
+    opacity: 0;
+    pointer-events: none;
+}
+.pixel-button:hover::after {
+    animation: pixel-glint 700ms linear;
+}
+
+/* hover: brillo + levantamiento */
+.pixel-button:hover {
+    filter: brightness(1.06) saturate(1.05);
+    transform: translateY(-4px);
+    box-shadow:
+        0 0 0 4px #007f58,
+        10px 10px 0 0 #003e2c,
+        16px 16px 0 0 #001b12,
+        inset 0 -6px 0 0 rgba(255,255,255,0.09);
+}
+
+/* active: efecto "presionado" */
 .pixel-button:active {
-    transform: translateY(3px);
-    box-shadow: 0 0 0 3px #00694d, 0 2px 0 3px #004d3a;
+    transform: translateY(8px);
+    box-shadow:
+        0 0 0 4px #00513f,
+        3px 3px 0 0 #003a2a,
+        6px 6px 0 0 #001a14,
+        inset 0 -4px 0 0 rgba(0,0,0,0.25);
 }
+
+/* foco (accesibilidad teclado) */
+.pixel-button:focus {
+    outline: 3px solid rgba(156, 255, 182, 0.65);
+    outline-offset: 4px;
+}
+
+/* icono: pixel perfecto */
 .recycle-icon {
-    width: 45px;
-    height: 45px;
-    margin-bottom: 8px;
+    width: 52px;
+    height: 52px;
+    margin-bottom: 6px;
     image-rendering: pixelated;
+    image-rendering: crisp-edges;
+    transform: translateZ(0);
+    border: 2px solid rgba(0,0,0,0.12);
+    padding: 3px;
+    background: rgba(0,0,0,0.06);
 }
+
+/* etiqueta interna (si usas un span o texto directo) */
+.pixel-button > span, .pixel-button > .btn-label {
+    font-size: 10px;
+    line-height: 1;
+    pointer-events: none;
+    padding: 0 4px;
+}
+
+/* mantener posicion relativa en shop-item si también usas ::after ahi */
+.shop-item { position: relative; }
+
 
 /* Tienda */
-.shop-item {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    border: 2px solid #444;
-    padding: 10px;
-    margin-bottom: 10px;
-    cursor: pointer;
-    background-color: #222;
-    transition: background 0.2s;
-}
-.shop-item:hover { background-color: #333; }
-.shop-item img { width: 40px; height: 40px; }
-.shop-item span { font-size: 10px; }
-.cost { color: #00ff66; font-size: 8px; }
+/* === FUENTE PIXEL RETRO === */
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
 
-#puntos { font-size: 18px; color: #00ff66; }
-
-/* ✅ Fondo por imagen detrás de todo */
-body { background: none !important; }
-
+/* === FONDO DE PANTALLA COMPLETA === */
 .bg-fullscreen {
     position: fixed;
     inset: 0;
     width: 100vw;
     height: 100vh;
-    object-fit: fill;
+    object-fit: cover;
     z-index: -1;
     pointer-events: none;
 }
 
-/* ✅ Quita scroll global */
-html, body {
-    height: 100%;
-    overflow-y: hidden;
+/* === BARRA DE PUNTOS === */
+#puntos {
+    font-size: 18px;
+    color: #00ff66;
+    text-shadow: 2px 2px #000; /* efecto pixel retro */
 }
 
-/* ✅ ✅ OVERLAY NEGRO AL PASAR DE NIVEL */
+/* === TIENDA === */
+/* === TIENDA - ITEMS === */
+/* === TIENDA - ITEMS === */
+.shop-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border: 2px solid #444;
+    padding: 12px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    background-color: #222;
+    transition: background 0.2s, transform 0.1s, box-shadow 0.1s;
+    box-shadow: inset 0 0 0 2px #555;
+    position: relative;
+}
+
+.shop-item:hover {
+    background-color: #333;
+    transform: scale(1.05);
+    box-shadow: inset 0 0 0 2px #00ff66;
+}
+
+.shop-item img {
+    width: 48px;
+    height: 48px;
+    image-rendering: pixelated;
+}
+
+.shop-item span {
+    font-size: 12px;
+    color: #fff;
+    text-shadow: 1px 1px #000;
+    text-align: center; /* centrado del texto */
+}
+
+/* === COST PIXELADO === */
+/* === COSTO PIXELADO ESTILO BOTÓN === */
+/* === COSTO PIXELADO MEJORADO ESTILO BOTÓN === */
+.cost {
+    display: inline-block;
+    padding: 6px 12px;                     /* un poco más de espacio interno */
+    background-color: #00ff66;             /* verde brillante */
+    color: #000;                           /* texto negro */
+    font-family: 'Press Start 2P', monospace;
+    font-size: 12px;
+    text-align: center;
+
+    border: 3px solid #003e2c;            /* borde más grueso para pixel look */
+    border-radius: 6px;                    /* esquinas más redondeadas */
+    
+    box-shadow:
+        3px 3px 0 #003e2c,                /* sombra exterior pixelada */
+        -1px -1px 0 #003e2c,              /* efecto de borde 3D retro */
+        inset 0 0 0 1px #00ff66;           /* brillo interior */
+    
+    image-rendering: pixelated;            /* asegura efecto pixel */
+    text-shadow:
+        2px 2px #003e2c,                  /* sombra del texto más marcada */
+        -1px -1px #003e2c;                /* sombra extra para volumen pixel */
+    
+    cursor: pointer;
+    transition: transform 0.1s, box-shadow 0.1s;
+}
+
+/* efecto hover tipo botón arcade */
+.cost:hover {
+    transform: translate(-2px, -2px);      /* sensación de "presionar" */
+    box-shadow:
+        4px 4px 0 #003e2c,
+        inset 0 0 0 1px #00ff66;
+}
+
+
+/* === OVERLAY DE NIVEL === */
 #level-overlay {
     position: fixed;
     inset: 0;
-    background: black;
-    color: white;
-    font-family: "Press Start 2P";
-    font-size: 20px;
-    display: none; /* oculto hasta que se active */
+    background: rgba(0, 0, 0, 0.9);
+    color: #00ff66;
+    font-family: 'Press Start 2P', monospace;
+    font-size: 22px;
+    display: none;
     justify-content: center;
     align-items: center;
     text-align: center;
     padding: 40px;
     z-index: 999999;
+    text-shadow: 2px 2px #000;
+    border: 4px solid #00ff66;
+}
+
+/* === BOTONES PIXEL === */
+.pixel-button {
+    width: 140px;
+    height: 140px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 6px;
+    padding: 6px;
+    box-sizing: border-box;
+    position: relative;
+
+    /* colores y bordes */
+    background: linear-gradient(180deg, #00d088 0%, #00a86b 70%);
+    color: #ffffff;
+    border: 4px solid #003e2c;
+    border-radius: 4px;
+
+    /* sombras pixel 3D */
+    box-shadow:
+        0 0 0 4px #00694d,
+        8px 8px 0 0 #003e2c,
+        14px 14px 0 0 #001f16,
+        inset 0 -6px 0 0 rgba(255,255,255,0.06);
+
+    cursor: pointer;
+    user-select: none;
+    transition: transform 0.1s linear, box-shadow 0.1s linear, filter 0.1s linear;
+    font-family: "Press Start 2P", monospace;
+    font-size: 12px;
+    text-align: center;
+    line-height: normal;
+    text-shadow: 1px 1px 0 #003e2c;
+    image-rendering: pixelated;
+}
+
+/* texto dentro del botón */
+.pixel-button > span, .pixel-button > .btn-label {
+    font-size: 12px;
+    line-height: 1.2;
+    pointer-events: none;
+    text-align: center; /* centrado */
+}
+
+/* hover: efecto 3D + brillo */
+.pixel-button:hover {
+    background: linear-gradient(180deg, #00ff66 0%, #00cc55 70%);
+    color: #000;
+    transform: translateY(-4px) scale(1.05);
+    box-shadow:
+        0 0 0 4px #00ff66,
+        10px 10px 0 0 #003e2c,
+        16px 16px 0 0 #001b12,
+        inset 0 -6px 0 0 rgba(255,255,255,0.09);
+}
+
+/* active: botón presionado */
+.pixel-button:active {
+    transform: translateY(6px);
+    box-shadow:
+        0 0 0 4px #00513f,
+        3px 3px 0 0 #003a2a,
+        6px 6px 0 0 #001a14,
+        inset 0 -4px 0 0 rgba(0,0,0,0.25);
 }

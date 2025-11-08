@@ -151,3 +151,47 @@ body::after {
 .opciones a {
     cursor: url('https://cur.cursors-4u.net/games/gam-3/gam248.cur'), pointer;
 }
+
+/* === BOTONES RETRO PARA LOGIN / REGISTRO === */
+button.btn-sound,
+a.btn-sound {
+    font-family: "Press Start 2P", monospace;
+    font-size: 16px;
+    text-transform: uppercase;
+    padding: 12px 20px;
+    margin-top: 10px;
+    color: #e7ffd9;
+    background: #3c7a47;
+    border: 3px solid #2a5d32;
+    border-radius: 6px;
+    box-shadow: 0 5px 0 #1f3f23;
+    text-decoration: none;
+    cursor: pointer;
+    display: inline-block;
+    transition: transform 0.1s, box-shadow 0.1s, background 0.2s;
+}
+
+/* Hover = levanta */
+button.btn-sound:hover,
+a.btn-sound:hover {
+    transform: translateY(-5px);
+    background: #4aa15c;
+}
+
+/* Click = rebote */
+button.btn-sound:active,
+a.btn-sound:active {
+    transform: translateY(3px);
+    box-shadow: 0 2px 0 #1f3f23;
+}
+
+/* Botón "Volver" un poco más discreto */
+a.btn-sound.volver {
+    background: rgba(255,255,255,0.2);
+    color: white;
+    border-color: #e7ffd9;
+}
+
+a.btn-sound.volver:hover {
+    background: rgba(255,255,255,0.4);
+}

@@ -147,3 +147,7 @@ body::after {
     opacity: 0.35;
 }
 
+/* Cursor retro */
+.opciones a {
+    cursor: url('https://cur.cursors-4u.net/games/gam-3/gam248.cur'), pointer;
+}

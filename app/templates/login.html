@@ -1,28 +1,20 @@
+{% extends "base.html" %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <title>Iniciar Sesión</title>
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
-</head>
-<body>
-    <!-- Overlay oscuro sobre el fondo -->
-    <div class="overlay"></div>
 
-    <!-- Contenedor centrado -->
-    <div class="content">
-        <h2>Login</h2>
+{% block title %}Iniciar Sesión{% endblock %}
 
-        <!-- Formulario simple de Django -->
-        <form method="post">
-            {% csrf_token %}
-            {{ form.as_p }} 
-            <button type="submit">Entrar</button>
-        </form>
+{% block content %}
+<div class="overlay"></div>
 
-        <!-- Botón volver simple -->
-        <p><a href="/sesion/">Volver</a></p>
-    </div>
-</body>
-</html>
+<div class="content">
+    <h2>Login</h2>
+
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn-sound">Entrar</button>
+    </form>
+
+    <p><a href="/sesion/" class="btn-sound">Volver</a></p>
+</div>
+{% endblock %}

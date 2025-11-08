@@ -1,0 +1,53 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Climate Clicker{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+
+<!-- 🎵 Música global -->
+<audio id="bg-music" src="{% static 'sounds/fondo1.mp3' %}" loop></audio>
+<audio id="hover-sfx" src="{% static 'sounds/boton1.mp3' %}"></audio>
+
+{% block content %}{% endblock %}
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+
+    const music = document.getElementById("bg-music");
+    const hover = document.getElementById("hover-sfx");
+
+    /* Música habilitada al primer click (regla del navegador) */
+    function enableMusic() {
+        music.volume = 0.45;
+        music.play().catch(()=>{});
+        localStorage.setItem("music_playing", "true");
+        window.removeEventListener("click", enableMusic);
+        window.removeEventListener("keydown", enableMusic);
+    }
+    window.addEventListener("click", enableMusic);
+    window.addEventListener("keydown", enableMusic);
+
+    /* Si el usuario ya había activado la música antes → continuar */
+    if (localStorage.getItem("music_playing") === "true") {
+        music.volume = 0.45;
+        music.play().catch(()=>{});
+    }
+
+    /* Sonido en botones */
+    document.querySelectorAll(".btn-sound").forEach(btn => {
+        btn.addEventListener("mouseenter", () => {
+            hover.currentTime = 0;
+            hover.volume = 0.9;
+            hover.play();
+        });
+    });
+});
+</script>
+
+</body>
+</html>

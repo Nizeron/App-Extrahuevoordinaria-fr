@@ -7,6 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const puntosSpan  = document.getElementById('puntos');
   const clickerBtn  = document.getElementById('clicker');
   const tiendaItems = document.querySelectorAll('.shop-item');
+  const click_powerSpan = document.getElementById('click_power');
 
   // --- Mensajes (para panel lateral) ---
   const mensajes = {
@@ -18,7 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
     luces:   { titulo: "Luces LED",            texto: "Usan menos energía, duran más y reducen emisiones." }
   };
 
-  // --- Mensajes largos (overlay negro) ---
+  // --- Mensajes largos (overlay negro) Cambiar--- 
   const mensajesLargos = {
     carbono: "Los sistemas de captura absorben CO₂ del aire. Esto reduce gases de efecto invernadero y ayuda a enfriar el planeta.",
     solar:   "La energía solar genera electricidad limpia sin emisiones. Reduce combustibles fósiles y mejora la calidad del aire.",
@@ -32,6 +33,13 @@ document.addEventListener('DOMContentLoaded', () => {
   function actualizarPuntos() {
     if (puntosSpan) puntosSpan.textContent = puntos;
   }
+  
+  // -- Actualizar click-power --
+  
+  function actualizarClic_power() {
+    if (click_powerSpan) click_powerSpan.textContent = puntosPorClick;
+  }
+  
 
   function showToast(text) {
     const t = document.createElement('div');
@@ -152,6 +160,7 @@ document.addEventListener('DOMContentLoaded', () => {
       // aplicar compra
       puntos -= costo;
       puntosPorClick += (isNaN(poder) ? 0 : poder);
+      actualizarClic_power();
       actualizarPuntos();
 
       // panel lateral info
@@ -193,6 +202,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // Inicializar UI
+  actualizarClic_power();
   actualizarPuntos();
   console.log("[init] puntos:", puntos, "ppc:", puntosPorClick, "path:", window.location.pathname);
 });

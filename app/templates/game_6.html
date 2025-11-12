@@ -26,6 +26,8 @@
 
     <div class="game-container">
         <h1>🌍 Ciudad Ecológica Perfecta</h1>
+        <!-- click power -->
+        <p>click power: <span id="click_power">{{ click_power|default:"0" }}</span></p>
         <p>Puntos: <span id="puntos">{{ puntos|default:"0" }}</span></p>
 
         <button id="clicker" class="pixel-button">
@@ -97,7 +99,7 @@
         <!-- ✅ ✅ PANTALLA NEGRA (OCULTA HASTA USARLA) -->
     <div id="level-overlay">
         <p id="overlay-text"></p>
-        <audio id="overlay-sound" src="{% static 'sounds/construcción.mp3' %}"></audio>
+        <audio id="overlay-sound" src="{% static 'sounds/construcción.m4a' %}"></audio>
     </div>
 
 </body>

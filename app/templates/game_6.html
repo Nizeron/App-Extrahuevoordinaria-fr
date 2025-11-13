@@ -20,6 +20,7 @@
 </head>
 
 <body>
+    <audio id="bg-music" src="{% static 'sounds/musicaf.mp3' %}" loop></audio>
     <img class="bg-fullscreen"
          src="{% static 'images/ciudad luz.png' %}"
          alt="" aria-hidden="true">
@@ -46,32 +47,32 @@
         <h2>Tienda</h2>
 
         <div class="shop-item" data-cost="20" data-power="1" id="carbono">
-            <img src="{% static 'images/personal.png' %}">
+            <img src="{% static 'images/co2.jpeg' %}">
             <span>Captura de Carbono<br><span class="cost">Costo: 20</span></span>
         </div>
 
         <div class="shop-item" data-cost="50" data-power="2" id="solar">
-            <img src="{% static 'images/camion.png' %}">
+            <img src="{% static 'images/panel.jpg' %}">
             <span>Energía Solar<br><span class="cost">Costo: 50</span></span>
         </div>
 
         <div class="shop-item" data-cost="100" data-power="3" id="buses">
-            <img src="{% static 'images/tuberias.png' %}">
+            <img src="{% static 'images/bus.png' %}">
             <span>Transporte Eléctrico<br><span class="cost">Costo: 100</span></span>
         </div>
 
         <div class="shop-item" data-cost="200" data-power="4" id="techos">
-            <img src="{% static 'images/panel.png' %}">
+            <img src="{% static 'images/techos verdes.webp' %}">
             <span>Techos Verdes<br><span class="cost">Costo: 200</span></span>
         </div>
 
         <div class="shop-item" data-cost="400" data-power="5" id="agua">
-            <img src="{% static 'images/arbol.png' %}">
+            <img src="{% static 'images/agua.webp' %}">
             <span>Ahorro de Agua<br><span class="cost">Costo: 400</span></span>
         </div>
 
         <div class="shop-item" data-cost="800" data-power="6" id="luces">
-            <img src="{% static 'images/luces.png' %}">
+            <img src="{% static 'images/luz.avif' %}">
             <span>Luces LED Inteligentes<br><span class="cost">Costo: 800</span></span>
         </div>
     </div>
@@ -101,6 +102,69 @@
         <p id="overlay-text"></p>
         <audio id="overlay-sound" src="{% static 'sounds/tra.mp3' %}"></audio>
     </div>
+    <!-- CONTROL DE MÚSICA -->
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const bg = document.getElementById('bg-music');
+        const overlay = document.getElementById('level-overlay');
+        const overlaySound = document.getElementById("overlay-sound");
+
+        /* ============================================================
+        MÚSICA DE FONDO — NO REPRODUCIR SI LA TRANSICIÓN ESTÁ ACTIVA
+        ============================================================ */
+
+        if (bg) {
+            try { bg.volume = 0.45; } catch (e) {}
+
+            function intentarPlay() {
+                // ❌ NO reproducir música si overlay está activo o suena la transición
+                if (overlay.classList.contains("active") || !overlaySound.paused) return;
+                bg.play().catch(() => {});
+            }
+
+            intentarPlay();
+
+            // Evitar que el usuario "desbloquee" la música durante transición
+            ['click', 'keydown', 'touchstart'].forEach(evt =>
+                document.addEventListener(evt, function onFirst() {
+
+                    // ❌ Si está la transición: NO reproducir, y NO quitar el listener todavía.
+                    if (overlay.classList.contains("active") || !overlaySound.paused) return;
+
+                    // Si no hay transición se puede reproducir
+                    bg.play().catch(() => {});
+
+                    // Quitamos el listener una vez se logró reproducir
+                    document.removeEventListener(evt, onFirst);
+
+                }, { passive: true })
+            );
+        }
+
+        /* ============================================================
+        CORRECCIÓN DE AUDIO PARA TRANSICIÓN
+        ============================================================ */
+
+        const bgMusic = document.getElementById("bg-music");
+
+        if (bgMusic && overlaySound) {
+
+            // Al sonar transición → pausar música y marcar overlay activo
+            overlaySound.addEventListener("play", () => {
+                bgMusic.pause();
+                overlaySound.volume = 1;
+                overlay.classList.add("active");   // 🔒 Bloquea reproducción de bg
+            });
+
+            // Cuando acaba la transición → reanudar música y desbloquear
+            overlaySound.addEventListener("ended", () => {
+                overlay.classList.remove("active");
+                bgMusic.play().catch(() => {});
+            });
+        }
+
+    });
+    </script>
 
 </body>
 </html>

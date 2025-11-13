@@ -21,19 +21,15 @@
 
 <body>
 
-    <!-- ===== Música de fondo del juego =====
-         - Archivo: static/sounds/Fondo videojuego.mp3
-         - No uso autoplay directo para evitar bloqueos; el JS intentará reproducir y
-           escuchará la primera interacción del usuario si el autoplay está bloqueado.
-    -->
-    <audio id="bg-music" src="{% static 'sounds/Fondo videojuego.mp3' %}" loop></audio>
+    <!-- Música de fondo -->
+    <audio id="bg-music" src="{% static 'sounds/musicaf.mp3' %}" loop></audio>
 
-    <!-- ✅ Fondo a pantalla completa -->
+    <!-- Fondo -->
     <img class="bg-fullscreen"
         src="{% static 'images/ciudad basura.png' %}"
         alt="" aria-hidden="true">
 
-    <!-- IZQUIERDA: CLICKER -->
+    <!-- CLICKER -->
     <div class="game-container">
         <h1>♻️ Reciclaje</h1>
         <p>Puntos: <span id="puntos">{{ puntos|default:"0" }}</span></p>
@@ -44,7 +40,7 @@
         </button>
     </div>
 
-    <!-- CENTRO: TIENDA -->
+    <!-- TIENDA -->
     <div class="shop-container">
         <h2>Tienda</h2>
 
@@ -52,7 +48,7 @@
             <img src="{% static 'images/co2.jpeg' %}">
             <span>Captura de Carbono<br><span class="cost">Costo: 20</span></span>
         </div>
-        <!--Candados-->
+
         <div class="shop-item" data-cost="50" data-power="2" id="solar">
             <img src="{% static 'images/panel.jpg' %}">
             <span>Energía Solar<br><span class="cost">Costo: 50</span></span>
@@ -64,89 +60,95 @@
         </div>
 
         <div class="shop-item" data-cost="200" data-power="4" id="techos">
-            <img src="{% static 'images/panel.png' %}">
+            <img src="{% static 'images/techos verdes.webp' %}">
             <span>Techos Verdes<br><span class="cost">Costo: 200</span></span>
         </div>
 
         <div class="shop-item" data-cost="400" data-power="5" id="agua">
-            <img src="{% static 'images/arbol.png' %}">
+            <img src="{% static 'images/agua.webp' %}">
             <span>Ahorro de Agua<br><span class="cost">Costo: 400</span></span>
         </div>
 
         <div class="shop-item" data-cost="800" data-power="6" id="luces">
-            <img src="{% static 'images/luces.png' %}">
+            <img src="{% static 'images/luz.avif' %}">
             <span>Luces LED Inteligentes<br><span class="cost">Costo: 800</span></span>
         </div>
     </div>
 
-    <!-- DERECHA: INFORMACIÓN DE MEJORAS -->
+    <!-- INFO DE MEJORA -->
     <div id="info-box" class="info-box hidden">
         <h3 id="info-title"></h3>
         <p id="info-text"></p>
     </div>
 
-    <!-- ✅ ✅ PANTALLA NEGRA (OCULTA HASTA USARLA) -->
+    <!-- PANTALLA DE TRANSICIÓN -->
     <div id="level-overlay">
         <p id="overlay-text"></p>
         <audio id="overlay-sound" src="{% static 'sounds/tra.mp3' %}"></audio>
     </div>
 
-    <!-- ===== JS para manejar la música de fondo =====
-         - Intenta reproducir al cargar.
-         - Si el autoplay está bloqueado, reproducirá en el primer gesto del usuario.
-         - Guarda currentTime en localStorage al ocultar/salir para dar sensación de continuidad.
-    -->
+    <!-- CONTROL DE MÚSICA -->
     <script>
     document.addEventListener('DOMContentLoaded', () => {
         const bg = document.getElementById('bg-music');
-        if (!bg) return;
+        const overlay = document.getElementById('level-overlay');
+        const overlaySound = document.getElementById("overlay-sound");
 
-        // Volumen inicial (0.0 - 1.0)
-        try { bg.volume = 0.45; } catch (e) { /* ignore */ }
+        /* ============================================================
+        MÚSICA DE FONDO — NO REPRODUCIR SI LA TRANSICIÓN ESTÁ ACTIVA
+        ============================================================ */
 
-        // Restaurar tiempo guardado (si existe)
-        try {
-            const saved = parseFloat(localStorage.getItem('bg_music_time') || '0');
-            if (!isNaN(saved) && saved > 0) {
-                // Algunos navegadores lanzan si currentTime se asigna antes de estar cargado.
-                bg.addEventListener('loadedmetadata', () => {
-                    try { bg.currentTime = Math.min(saved, bg.duration || saved); } catch (_) {}
-                }, { once: true });
+        if (bg) {
+            try { bg.volume = 0.45; } catch (e) {}
+
+            function intentarPlay() {
+                // ❌ NO reproducir música si overlay está activo o suena la transición
+                if (overlay.classList.contains("active") || !overlaySound.paused) return;
+                bg.play().catch(() => {});
             }
-        } catch (_) {}
 
-        // Intenta reproducir; si falla (autoplay), escucha la primera interacción del usuario
-        function intentarPlay() {
-            bg.play().catch(() => {
-                // autoplay bloqueado; la reproducción se intentará con la primera interacción (continuará abajo)
+            intentarPlay();
+
+            // Evitar que el usuario "desbloquee" la música durante transición
+            ['click', 'keydown', 'touchstart'].forEach(evt =>
+                document.addEventListener(evt, function onFirst() {
+
+                    // ❌ Si está la transición: NO reproducir, y NO quitar el listener todavía.
+                    if (overlay.classList.contains("active") || !overlaySound.paused) return;
+
+                    // Si no hay transición se puede reproducir
+                    bg.play().catch(() => {});
+
+                    // Quitamos el listener una vez se logró reproducir
+                    document.removeEventListener(evt, onFirst);
+
+                }, { passive: true })
+            );
+        }
+
+        /* ============================================================
+        CORRECCIÓN DE AUDIO PARA TRANSICIÓN
+        ============================================================ */
+
+        const bgMusic = document.getElementById("bg-music");
+
+        if (bgMusic && overlaySound) {
+
+            // Al sonar transición → pausar música y marcar overlay activo
+            overlaySound.addEventListener("play", () => {
+                bgMusic.pause();
+                overlaySound.volume = 1;
+                overlay.classList.add("active");   // 🔒 Bloquea reproducción de bg
+            });
+
+            // Cuando acaba la transición → reanudar música y desbloquear
+            overlaySound.addEventListener("ended", () => {
+                overlay.classList.remove("active");
+                bgMusic.play().catch(() => {});
             });
         }
-        intentarPlay();
 
-        // Primer gesto del usuario inicia la música si no se pudo iniciar automáticamente
-        ['click', 'keydown', 'touchstart'].forEach(evt =>
-            document.addEventListener(evt, function onFirst() {
-                bg.play().catch(() => {});
-                document.removeEventListener(evt, onFirst);
-            }, { passive: true })
-        );
-
-        // Guardar posición cuando se abandona/oculta la página para "continuidad"
-        function guardarPosicion() {
-            try { localStorage.setItem('bg_music_time', String(bg.currentTime || 0)); } catch (_) {}
-        }
-        window.addEventListener('pagehide', guardarPosicion);
-        window.addEventListener('visibilitychange', () => {
-            if (document.visibilityState === 'hidden') guardarPosicion();
-        });
-
-        // Exponer función para pausar/reanudar desde la consola o botones
-        window.toggleGameMusic = () => {
-            if (bg.paused) bg.play().catch(() => {});
-            else bg.pause();
-        };
     });
     </script>
-
 </body>
 </html>

@@ -21,13 +21,25 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // --- Mensajes largos (overlay negro) Cambiar--- 
   const mensajesLargos = {
-    carbono: "Los sistemas de captura absorben CO₂ del aire. Esto reduce gases de efecto invernadero y ayuda a enfriar el planeta.",
-    solar:   "La energía solar genera electricidad limpia sin emisiones. Reduce combustibles fósiles y mejora la calidad del aire.",
-    buses:   "Los buses eléctricos no producen gases tóxicos ni ruido. Reducen el smog y mejoran la salud urbana.",
-    techos:  "La vegetación en techos purifica el aire, atrapa CO₂, baja la temperatura y absorbe agua lluvia.",
-    agua:    "El uso eficiente de agua reduce el gasto energético en tratamiento y evita desperdicio.",
-    luces:   "Las luces LED consumen mucha menos energía, duran más y evitan toneladas de CO₂ al año."
+    carbono: "Los sistemas de captura retiran CO₂ directamente del aire, reduciendo gases que calientan el planeta. Al bajar la concentración de CO₂, se desacelera el calentamiento global y se estabiliza la temperatura.",
+    solar:   "Los paneles solares generan electricidad sin quemar combustibles fósiles ni emitir CO₂. Esto disminuye la contaminación del aire y reduce el impacto climático de la energía.",
+    buses:   "Los buses eléctricos no emiten humo ni partículas dañinas, mejorando la calidad del aire. Reemplazar buses diésel reduce CO₂, ruido y enfermedades respiratorias en las ciudades.",
+    techos:  "La vegetación en techos atrapa CO₂ y partículas contaminantes, limpiando el aire. Además, baja la temperatura y reduce el efecto de “isla de calor” en la ciudad.",
+    agua:    "Ahorrar agua reduce la energía necesaria para bombearla y tratarla, disminuyendo CO₂. También protege los recursos hídricos en tiempos de sequía y evita el desperdicio.",
+    luces:   "Las luces LED consumen mucha menos energía y duran más que las ampolletas comunes. Esto reduce emisiones de CO₂ y hasta un 80% del consumo de energía en iluminación de las ciudades."
   };
+  
+  /*
+  <------------ Mensajes mas largos y tecnico, pero no se alcanzan a leer -------------->
+  La captura directa de aire utiliza adsorbentes químicos capaces de fijar moléculas de CO₂ incluso en concentraciones bajas (~420 ppm). Diversos estudios muestran que esta tecnología puede remover cientos a miles de toneladas de CO₂ por planta al año. Reducir CO₂ atmosférico disminuye el efecto invernadero, que es responsable del aumento global de la temperatura. Según el IPCC, la captura directa es una herramienta necesaria para limitar el calentamiento a 1.5 °C. Su uso contribuye de manera medible a frenar la acumulación de gases de efecto invernadero.
+  <------------ MENSAJES LARGOS ANTIGUOS --------------------->
+  Los sistemas de captura absorben CO₂ del aire. Esto reduce gases de efecto invernadero y ayuda a enfriar el planeta.
+  La energía solar genera electricidad limpia sin emisiones. Reduce combustibles fósiles y mejora la calidad del aire.
+  Los buses eléctricos no producen gases tóxicos ni ruido. Reducen el smog y mejoran la salud urbana.
+  La vegetación en techos purifica el aire, atrapa CO₂, baja la temperatura y absorbe agua lluvia.
+  El uso eficiente de agua reduce el gasto energético en tratamiento y evita desperdicio.
+  Las luces LED consumen mucha menos energía, duran más y evitan toneladas de CO₂ al año.
+  */
 
   // --- UI helpers ---
   function actualizarPuntos() {

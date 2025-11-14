@@ -207,3 +207,4 @@ document.addEventListener('DOMContentLoaded', () => {
   console.log("[init] puntos:", puntos, "ppc:", puntosPorClick, "path:", window.location.pathname);
 });
 
+//ClimateClicker 

@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <title>Ciudad Limpia - Nivel 2</title>
 
-    <!-- ✅ Datos del backend -->
+    <!-- Datos del backend -->
     <script>
     window.__INIT__ = {
         puntos: {{ puntos|default:"0"|safe }},
@@ -27,7 +27,7 @@
         alt="" aria-hidden="true">
 
     <div class="game-container">
-        <h1>♻️ Ciudad Limpia - Nivel 2</h1>
+        <h1>Ciudad Limpia - Nivel 2</h1>
         <!-- click power-->
         <p>click power: <span id="click_power">{{ click_power|default:"0" }}</span></p>
         <p>Puntos: <span id="puntos">{{ puntos|default:"0" }}</span></p>
@@ -91,7 +91,7 @@
         </div>
 
 
-    <!-- ✅ Información acumulada de nivel 1 y 2 -->
+    <!-- Información acumulada de nivel 1 y 2 -->
     <div class="info-box">
         <h3>Captura de Carbono</h3>
         <p>Los filtros de CO₂ reducen toxinas en el aire y hacen ciudades más limpias.</p>
@@ -99,7 +99,7 @@
         <h3>Energía Solar</h3>
         <p>La luz solar genera electricidad sin contaminar y reduce combustibles fósiles.</p>
     </div>
-        <!-- ✅ ✅ PANTALLA NEGRA (OCULTA HASTA USARLA) -->
+        <!--  PANTALLA NEGRA (OCULTA HASTA USARLA) -->
     <div id="level-overlay">
         <p id="overlay-text"></p>
         <audio id="overlay-sound" src="{% static 'sounds/tra.mp3' %}"></audio>
@@ -111,15 +111,13 @@
         const overlay = document.getElementById('level-overlay');
         const overlaySound = document.getElementById("overlay-sound");
 
-        /* ============================================================
-        MÚSICA DE FONDO — NO REPRODUCIR SI LA TRANSICIÓN ESTÁ ACTIVA
-        ============================================================ */
+        /* MÚSICA DE FONDO — NO REPRODUCIR SI LA TRANSICIÓN ESTÁ ACTIVA */
 
         if (bg) {
             try { bg.volume = 0.45; } catch (e) {}
 
             function intentarPlay() {
-                // ❌ NO reproducir música si overlay está activo o suena la transición
+                //  NO reproducir música si overlay está activo o suena la transición
                 if (overlay.classList.contains("active") || !overlaySound.paused) return;
                 bg.play().catch(() => {});
             }
@@ -130,7 +128,7 @@
             ['click', 'keydown', 'touchstart'].forEach(evt =>
                 document.addEventListener(evt, function onFirst() {
 
-                    // ❌ Si está la transición: NO reproducir, y NO quitar el listener todavía.
+                    //  Si está la transición: NO reproducir, y NO quitar el listener todavía.
                     if (overlay.classList.contains("active") || !overlaySound.paused) return;
 
                     // Si no hay transición se puede reproducir
@@ -143,9 +141,7 @@
             );
         }
 
-        /* ============================================================
-        CORRECCIÓN DE AUDIO PARA TRANSICIÓN
-        ============================================================ */
+        /* CORRECCIÓN DE AUDIO PARA TRANSICIÓN*/
 
         const bgMusic = document.getElementById("bg-music");
 
@@ -155,10 +151,10 @@
             overlaySound.addEventListener("play", () => {
                 bgMusic.pause();
                 overlaySound.volume = 1;
-                overlay.classList.add("active");   // 🔒 Bloquea reproducción de bg
+                overlay.classList.add("active");   //  Bloquea reproducción de bg
             });
 
-            // Cuando acaba la transición → reanudar música y desbloquear
+            // Cuando acaba la transición : reanudar música y desbloquear
             overlaySound.addEventListener("ended", () => {
                 overlay.classList.remove("active");
                 bgMusic.play().catch(() => {});

@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <title>Ciudad Perfecta - Nivel 6</title>
 
-    <!-- ✅ Datos desde Django hacia JS -->
+    <!--  Datos desde Django hacia JS -->
     <script>
     window.__INIT__ = {
         puntos: {{ puntos|default:"0"|safe }},
@@ -26,7 +26,7 @@
         alt="" aria-hidden="true">
 
     <div class="game-container">
-        <h1>🌍 Ciudad Ecológica Perfecta</h1>
+        <h1>Ciudad Ecológica Perfecta</h1>
         <!-- click power -->
         <p>click power: <span id="click_power">{{ click_power|default:"0" }}</span></p>
         <p>Puntos: <span id="puntos">{{ puntos|default:"0" }}</span></p>
@@ -43,7 +43,7 @@
         </p>
     </div>
 
-    <!-- ✅ La tienda sigue disponible para subir puntos -->
+    <!--  La tienda sigue disponible para subir puntos -->
     <div class="shop-container">
         <h2>Tienda</h2>
 
@@ -78,7 +78,7 @@
         </div>
     </div>
 
-    <!-- ✅ Panel final con TODA la información -->
+    <!--  Panel final con TODA la información -->
     <div class="info-box">
         <h3>Captura de Carbono</h3>
         <p>Los filtros atrapan CO₂ de la atmósfera y ayudan a limpiar el aire.</p>
@@ -98,7 +98,7 @@
         <h3>Luces LED Inteligentes</h3>
         <p>Consumen menos energía, duran más y reducen toneladas de CO₂ emitidas a la atmósfera.</p>
     </div>
-        <!-- ✅ ✅ PANTALLA NEGRA (OCULTA HASTA USARLA) -->
+        <!--  PANTALLA NEGRA (OCULTA HASTA USARLA) -->
     <div id="level-overlay">
         <p id="overlay-text"></p>
         <audio id="overlay-sound" src="{% static 'sounds/tra.mp3' %}"></audio>
@@ -110,15 +110,13 @@
         const overlay = document.getElementById('level-overlay');
         const overlaySound = document.getElementById("overlay-sound");
 
-        /* ============================================================
-        MÚSICA DE FONDO — NO REPRODUCIR SI LA TRANSICIÓN ESTÁ ACTIVA
-        ============================================================ */
+        /* MÚSICA DE FONDO — NO REPRODUCIR SI LA TRANSICIÓN ESTÁ ACTIVA*/
 
         if (bg) {
             try { bg.volume = 0.45; } catch (e) {}
 
             function intentarPlay() {
-                // ❌ NO reproducir música si overlay está activo o suena la transición
+                // NO reproducir música si overlay está activo o suena la transición
                 if (overlay.classList.contains("active") || !overlaySound.paused) return;
                 bg.play().catch(() => {});
             }
@@ -129,7 +127,7 @@
             ['click', 'keydown', 'touchstart'].forEach(evt =>
                 document.addEventListener(evt, function onFirst() {
 
-                    // ❌ Si está la transición: NO reproducir, y NO quitar el listener todavía.
+                    //  Si está la transición: NO reproducir, y NO quitar el listener todavía.
                     if (overlay.classList.contains("active") || !overlaySound.paused) return;
 
                     // Si no hay transición se puede reproducir
@@ -142,9 +140,7 @@
             );
         }
 
-        /* ============================================================
-        CORRECCIÓN DE AUDIO PARA TRANSICIÓN
-        ============================================================ */
+        /* CORRECCIÓN DE AUDIO PARA TRANSICIÓN */
 
         const bgMusic = document.getElementById("bg-music");
 
@@ -154,7 +150,7 @@
             overlaySound.addEventListener("play", () => {
                 bgMusic.pause();
                 overlaySound.volume = 1;
-                overlay.classList.add("active");   // 🔒 Bloquea reproducción de bg
+                overlay.classList.add("active");   //  Bloquea reproducción de bg
             });
 
             // Cuando acaba la transición → reanudar música y desbloquear

@@ -31,7 +31,8 @@
 
     <!-- CLICKER -->
     <div class="game-container">
-        <h1>♻️ Reciclaje</h1>
+        <h1>
+            Reciclaje</h1>
         <p>Puntos: <span id="puntos">{{ puntos|default:"0" }}</span></p>
 
         <button id="clicker" class="pixel-button">
@@ -132,7 +133,7 @@
             ['click', 'keydown', 'touchstart'].forEach(evt =>
                 document.addEventListener(evt, function onFirst() {
 
-                    // ❌ Si está la transición: NO reproducir, y NO quitar el listener todavía.
+                    //  Si está la transición: NO reproducir, y NO quitar el listener todavía.
                     if (overlay.classList.contains("active") || !overlaySound.paused) return;
 
                     // Si no hay transición se puede reproducir
@@ -145,9 +146,7 @@
             );
         }
 
-        /* ============================================================
-        CORRECCIÓN DE AUDIO PARA TRANSICIÓN
-        ============================================================ */
+        /*CORRECCIÓN DE AUDIO PARA TRANSICIÓN */
 
         const bgMusic = document.getElementById("bg-music");
 
@@ -157,10 +156,10 @@
             overlaySound.addEventListener("play", () => {
                 bgMusic.pause();
                 overlaySound.volume = 1;
-                overlay.classList.add("active");   // 🔒 Bloquea reproducción de bg
+                overlay.classList.add("active");   // Bloquea reproducción de bg
             });
 
-            // Cuando acaba la transición → reanudar música y desbloquear
+            // Cuando acaba la transición : reanudar música y desbloquear
             overlaySound.addEventListener("ended", () => {
                 overlay.classList.remove("active");
                 bgMusic.play().catch(() => {});

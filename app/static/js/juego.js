@@ -174,7 +174,7 @@ document.addEventListener('DOMContentLoaded', () => {
         box.classList.remove('hidden');
       }
 
-      // ✅ TOAST de compra SIEMPRE (tu funcionalidad antigua)
+      // TOAST de compra SIEMPRE (tu funcionalidad antigua)
       showToast(`Compraste ${msg ? msg.titulo : id}  +${poder}/click`);
 
       // guardar y comprobar si hay cambio de template

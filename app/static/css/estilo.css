@@ -1,4 +1,4 @@
-/* ✅ Fondo a pantalla completa, estirado sin recorte */
+/*  Fondo a pantalla completa, estirado sin recorte */
 body {
     background-size: 100% 100%;
     background-repeat: no-repeat;
@@ -74,8 +74,7 @@ body {
 .info-box.hidden { display: none; }
 
 
-/* ✅ Botón clic */
-/* ================= BOTÓN CLICKER: EPIC PIXEL ================= */
+/*  Botón clic */
 .pixel-button {
     /* tamaño / layout */
     width: 140px;
@@ -323,7 +322,7 @@ body {
 
 
 
-/* === BOTONES PIXEL === */
+/* BOTONES PIXEL  */
 .pixel-button {
     width: 140px;
     height: 140px;

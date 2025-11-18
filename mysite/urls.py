@@ -25,7 +25,7 @@ urlpatterns = [
     path('logout/', auth_views.LogoutView.as_view(next_page='/'), name='logout'),
     path('register/', views.register, name='register'),
 
-    # ✅ Rutas para niveles, usando la vista correcta desde la APP
+    #  Rutas para niveles, usando la vista correcta desde la APP
     path('game.html', juego_view),
     path('game_1.html', juego_view, name='game1'),
     path('game_2.html', juego_view, name='game2'),

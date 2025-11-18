@@ -2,7 +2,8 @@ from django.contrib import admin
 from django.urls import include, path
 from django.contrib.auth import views as auth_views
 from . import views
-from app.views import juego_view   # ✅ Importas la vista correcta
+from app.views import juego_view  
+from app.views import play
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -12,6 +13,8 @@ urlpatterns = [
 
     # Incluye rutas de la app del juego
     path('game/', include('app.urls')),
+    path("play/", play, name="play"),
+
 
     # Otras páginas
     path('about/', views.about),

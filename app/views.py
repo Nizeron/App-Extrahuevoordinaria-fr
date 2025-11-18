@@ -1,6 +1,6 @@
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import ensure_csrf_cookie
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import JsonResponse
 from .models import ProgresoJugador
 import json
@@ -69,3 +69,16 @@ def guardar_progreso(request):
         "click_power": progreso.click_power,
         "template_actual": progreso.template_actual
     })
+
+@login_required
+def entrada_juego(request):
+    progreso, _ = ProgresoJugador.objects.get_or_create(user=request.user)
+    tpl = progreso.template_actual  # "game.html", "game_1.html", "game_2.html", ...
+
+    # Redirige a la URL del nivel actual:
+    return redirect(f"/{tpl}")
+@login_required
+def play(request):
+    progreso, _ = ProgresoJugador.objects.get_or_create(user=request.user)
+    # progreso.template_actual es algo como "game.html", "game_2.html", etc.
+    return redirect(f"/{progreso.template_actual}")

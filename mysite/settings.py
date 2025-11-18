@@ -124,7 +124,7 @@ STATICFILES_DIRS = [
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # Redirección después del login
-LOGIN_REDIRECT_URL = '/game/'
+LOGIN_REDIRECT_URL = '/play/'
 
 # Redirección al login si no está autenticado
 LOGIN_URL = '/login/'
